@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { booksApi } from "../apis/books.api";
+import { borrowingsApi } from "../apis/borrowings.api";
 import { useAuth } from "../context/AuthContext";
 import type { Book } from "../types/book.type";
+import type { CreateBorrowingDto } from "../types/borrowing.type";
 
 interface BooksListProps {
   onBookSelect?: (book: Book) => void;
   showActions?: boolean;
+  showBorrowAction?: boolean;
 }
 
 export const BooksList: React.FC<BooksListProps> = ({
   onBookSelect,
   showActions = false,
+  showBorrowAction = false,
 }) => {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
@@ -18,7 +22,11 @@ export const BooksList: React.FC<BooksListProps> = ({
   const [searchTerm, setSearchTerm] = useState("");
   const { user } = useAuth();
 
-  const canManageBooks = user?.role === "admin";
+  const canManageBooks = user?.role === "admin" || user?.role === "librarian";
+  const canBorrowBooks =
+    user?.role === "member" ||
+    user?.role === "admin" ||
+    user?.role === "librarian";
 
   useEffect(() => {
     loadBooks();
@@ -49,6 +57,36 @@ export const BooksList: React.FC<BooksListProps> = ({
     } catch (err) {
       setError("Erreur lors de la suppression du livre");
       console.error("Error deleting book:", err);
+    }
+  };
+
+  const handleBorrowBook = async (book: Book) => {
+    if (!user?.id) {
+      setError("Vous devez être connecté pour emprunter un livre");
+      return;
+    }
+
+    if (!window.confirm(`Voulez-vous emprunter le livre "${book.title}" ?`)) {
+      return;
+    }
+
+    try {
+      const dueDate = new Date();
+      dueDate.setDate(dueDate.getDate() + 14); // 2 semaines par défaut
+
+      const borrowingData: CreateBorrowingDto = {
+        userId: user.id,
+        bookId: book._id,
+        dueDate: dueDate.toISOString(),
+      };
+
+      await borrowingsApi.create(borrowingData);
+      alert("Livre emprunté avec succès!");
+    } catch (err: any) {
+      setError(
+        err.response?.data?.message || "Erreur lors de l'emprunt du livre"
+      );
+      console.error("Error borrowing book:", err);
     }
   };
 
@@ -140,7 +178,7 @@ export const BooksList: React.FC<BooksListProps> = ({
                   )}
                 </div>
 
-                {(showActions || onBookSelect) && (
+                {(showActions || onBookSelect || showBorrowAction) && (
                   <div className="card-footer">
                     <div className="btn-group w-100" role="group">
                       {onBookSelect && (
@@ -149,6 +187,15 @@ export const BooksList: React.FC<BooksListProps> = ({
                           onClick={() => onBookSelect(book)}
                         >
                           Sélectionner
+                        </button>
+                      )}
+
+                      {showBorrowAction && canBorrowBooks && !onBookSelect && (
+                        <button
+                          className="btn btn-success btn-sm"
+                          onClick={() => handleBorrowBook(book)}
+                        >
+                          Emprunter
                         </button>
                       )}
 

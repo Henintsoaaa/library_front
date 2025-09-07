@@ -2,5 +2,8 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role: "user" | "admin";
+  phone?: string;
+  role: "user" | "admin" | "librarian" | "member";
+  membershipDate?: string;
+  active?: boolean;
 }

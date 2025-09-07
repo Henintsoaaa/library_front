@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { BooksList } from "./BooksList";
 import { AddBookForm } from "./AddBookForm";
+import { BorrowingsDashboard } from "./BorrowingsDashboard";
 import type { Book } from "../types/book.type";
 
 type ActiveTab = "welcome" | "catalog" | "add-book" | "borrowings";
@@ -34,7 +35,7 @@ export const Dashboard: React.FC = () => {
           <div>
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h2>Catalogue des livres</h2>
-              {user?.role === "admin" && (
+              {(user?.role === "admin" || user?.role === "librarian") && (
                 <button
                   className="btn btn-primary"
                   onClick={() => setActiveTab("add-book")}
@@ -46,7 +47,8 @@ export const Dashboard: React.FC = () => {
             </div>
             <BooksList
               key={refreshBooks}
-              showActions={user?.role === "admin"}
+              showActions={user?.role === "admin" || user?.role === "librarian"}
+              showBorrowAction={user?.role === "member"}
             />
           </div>
         );
@@ -62,15 +64,7 @@ export const Dashboard: React.FC = () => {
         );
 
       case "borrowings":
-        return (
-          <div>
-            <h2>Mes emprunts</h2>
-            <div className="alert alert-info">
-              <i className="fa fa-info-circle me-2"></i>
-              Fonctionnalité en cours de développement
-            </div>
-          </div>
-        );
+        return <BorrowingsDashboard />;
 
       default:
         return (
@@ -90,10 +84,14 @@ export const Dashboard: React.FC = () => {
                 >
                   <h3 className="dashboard-card-title">
                     <i className="fa fa-book me-2"></i>
-                    Mes emprunts
+                    {user?.role === "admin" || user?.role === "librarian"
+                      ? "Gestion des emprunts"
+                      : "Mes emprunts"}
                   </h3>
                   <p className="dashboard-card-description">
-                    Consultez vos livres empruntés
+                    {user?.role === "admin" || user?.role === "librarian"
+                      ? "Gérer tous les emprunts et retards"
+                      : "Consultez vos livres empruntés"}
                   </p>
                 </div>
 
@@ -110,7 +108,7 @@ export const Dashboard: React.FC = () => {
                   </p>
                 </div>
 
-                {user?.role === "admin" && (
+                {(user?.role === "admin" || user?.role === "librarian") && (
                   <div
                     className="dashboard-card cursor-pointer"
                     onClick={() => setActiveTab("add-book")}
@@ -147,7 +145,13 @@ export const Dashboard: React.FC = () => {
                 className="btn btn-secondary"
                 style={{ fontSize: "0.75rem", padding: "0.25rem 0.5rem" }}
               >
-                {user?.role === "admin" ? "Administrateur" : "Utilisateur"}
+                {user?.role === "admin"
+                  ? "Administrateur"
+                  : user?.role === "librarian"
+                  ? "Bibliothécaire"
+                  : user?.role === "member"
+                  ? "Membre"
+                  : "Utilisateur"}
               </span>
               <button onClick={handleLogout} className="btn btn-danger">
                 Déconnexion
@@ -186,10 +190,12 @@ export const Dashboard: React.FC = () => {
               onClick={() => setActiveTab("borrowings")}
             >
               <i className="fa fa-book me-1"></i>
-              Mes emprunts
+              {user?.role === "admin" || user?.role === "librarian"
+                ? "Gestion des emprunts"
+                : "Mes emprunts"}
             </button>
           </li>
-          {user?.role === "admin" && (
+          {(user?.role === "admin" || user?.role === "librarian") && (
             <li className="nav-item">
               <button
                 className={`nav-link ${

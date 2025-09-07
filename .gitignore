@@ -26,5 +26,6 @@ dist-ssr
 
 LIBRARY_README.md
 TESTING_GUIDE.md
+BORROWINGS_API_DOC.md
 
 .env
