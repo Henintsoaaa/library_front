@@ -70,72 +70,120 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
   };
 
   return (
-    <div className="card">
-      <div className="card-header">
-        <h5 className="mb-0">Ajouter un nouveau livre</h5>
-      </div>
-      <div className="card-body">
-        {error && (
-          <div className="alert alert-danger" role="alert">
-            {error}
+    <div className="max-w-4xl mx-auto">
+      <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 animate-fade-in">
+        <div className="border-b border-gray-200 pb-4 mb-6">
+          <div className="flex items-center">
+            <div className="flex items-center justify-center w-10 h-10 bg-green-100 rounded-lg mr-3">
+              <svg
+                className="w-6 h-6 text-green-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                />
+              </svg>
+            </div>
+            <h5 className="text-xl font-bold text-gray-800 m-0">
+              Ajouter un nouveau livre
+            </h5>
           </div>
-        )}
+        </div>{" "}
+        <div className="p-6">
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-6 animate-fade-in">
+              <div className="flex items-center">
+                <svg
+                  className="w-5 h-5 mr-2"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+                {error}
+              </div>
+            </div>
+          )}
 
-        <form onSubmit={handleSubmit}>
-          <div className="row">
-            <div className="col-md-6">
-              <div className="form-group mb-3">
-                <label htmlFor="title">Titre *</label>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  htmlFor="title"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Titre du livre <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
-                  className="form-control"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                   id="title"
                   name="title"
                   value={formData.title}
                   onChange={handleChange}
                   required
+                  placeholder="Titre du livre"
                 />
-              </div>
-            </div>
-
-            <div className="col-md-6">
-              <div className="form-group mb-3">
-                <label htmlFor="author">Auteur *</label>
+              </div>{" "}
+              <div>
+                <label
+                  htmlFor="author"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Auteur <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
-                  className="form-control"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                   id="author"
                   name="author"
                   value={formData.author}
                   onChange={handleChange}
                   required
+                  placeholder="Nom de l'auteur"
                 />
               </div>
             </div>
-          </div>
 
-          <div className="row">
-            <div className="col-md-6">
-              <div className="form-group mb-3">
-                <label htmlFor="isbn">ISBN *</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  htmlFor="isbn"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  ISBN <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="text"
-                  className="form-control"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                   id="isbn"
                   name="isbn"
                   value={formData.isbn}
                   onChange={handleChange}
                   required
+                  placeholder="978-XXXXXXXXXX"
                 />
               </div>
-            </div>
 
-            <div className="col-md-6">
-              <div className="form-group mb-3">
-                <label htmlFor="category">Catégorie</label>
+              <div>
+                <label
+                  htmlFor="category"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Catégorie
+                </label>
                 <input
                   type="text"
-                  className="form-control"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                   id="category"
                   name="category"
                   value={formData.category}
@@ -144,59 +192,91 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
                 />
               </div>
             </div>
-          </div>
 
-          <div className="row">
-            <div className="col-md-6">
-              <div className="form-group mb-3">
-                <label htmlFor="publishedYear">Année de publication</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label
+                  htmlFor="publishedYear"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Année de publication
+                </label>
                 <input
                   type="number"
-                  className="form-control"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                   id="publishedYear"
                   name="publishedYear"
                   value={formData.publishedYear || ""}
                   onChange={handleChange}
                   min="1000"
                   max={new Date().getFullYear()}
+                  placeholder="2024"
                 />
               </div>
-            </div>
 
-            <div className="col-md-6">
-              <div className="form-group mb-3">
-                <label htmlFor="copies">Nombre d'exemplaires</label>
+              <div>
+                <label
+                  htmlFor="copies"
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                >
+                  Nombre d'exemplaires
+                </label>
                 <input
                   type="number"
-                  className="form-control"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                   id="copies"
                   name="copies"
                   value={formData.copies || 1}
                   onChange={handleChange}
                   min="1"
+                  placeholder="1"
                 />
               </div>
             </div>
-          </div>
 
-          <div className="d-flex justify-content-end gap-2">
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={onCancel}
-              disabled={loading}
-            >
-              Annuler
-            </button>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={loading}
-            >
-              {loading ? "Ajout en cours..." : "Ajouter le livre"}
-            </button>
-          </div>
-        </form>
+            <div className="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-gray-200">
+              <button
+                type="button"
+                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 transition-colors duration-200 order-2 sm:order-1"
+                onClick={onCancel}
+                disabled={loading}
+              >
+                Annuler
+              </button>
+              <button
+                type="submit"
+                className={`bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:from-green-700 hover:to-green-800 transform hover:scale-105 transition-all duration-200 order-1 sm:order-2 ${
+                  loading ? "opacity-75 cursor-not-allowed" : ""
+                }`}
+                disabled={loading}
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></div>
+                    Ajout en cours...
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center">
+                    <svg
+                      className="w-5 h-5 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
+                    Ajouter le livre
+                  </div>
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );

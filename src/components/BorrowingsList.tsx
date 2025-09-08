@@ -123,19 +123,17 @@ export const BorrowingsList: React.FC<BorrowingsListProps> = ({
   };
 
   const getStatusBadge = (borrowing: BorrowingWithDetails) => {
-    const baseClasses = "badge ";
     switch (borrowing.status) {
       case "borrowed":
-        return (
-          baseClasses +
-          (isOverdue(borrowing) ? "badge-warning" : "badge-primary")
-        );
+        return isOverdue(borrowing)
+          ? "bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-semibold"
+          : "bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-semibold";
       case "returned":
-        return baseClasses + "badge-success";
+        return "bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-semibold";
       case "overdue":
-        return baseClasses + "badge-danger";
+        return "bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-semibold";
       default:
-        return baseClasses + "badge-secondary";
+        return "bg-gray-100 text-gray-800 px-2 py-1 rounded-full text-xs font-semibold";
     }
   };
 
@@ -157,174 +155,248 @@ export const BorrowingsList: React.FC<BorrowingsListProps> = ({
 
   if (loading) {
     return (
-      <div className="text-center p-4">
-        <div className="spinner-border" role="status">
-          <span className="sr-only">Chargement...</span>
-        </div>
+      <div className="flex justify-center items-center p-8">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
+        <span className="ml-3 text-gray-600">Chargement...</span>
       </div>
     );
   }
 
   return (
-    <div className="borrowings-list">
+    <div className="space-y-6 animate-fade-in">
       {showStats && stats && canManageBorrowings && (
-        <div className="row mb-4">
-          <div className="col-md-3">
-            <div className="card text-center">
-              <div className="card-body">
-                <h5 className="card-title text-primary">
-                  {stats.totalBorrowings}
-                </h5>
-                <p className="card-text">Total emprunts</p>
-              </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <div className="bg-white rounded-xl shadow-lg p-6 text-center border border-blue-100">
+            <div className="text-3xl font-bold text-blue-600 mb-2">
+              {stats.totalBorrowings}
             </div>
+            <p className="text-gray-600">Total emprunts</p>
           </div>
-          <div className="col-md-3">
-            <div className="card text-center">
-              <div className="card-body">
-                <h5 className="card-title text-info">
-                  {stats.activeBorrowings}
-                </h5>
-                <p className="card-text">Emprunts actifs</p>
-              </div>
+          <div className="bg-white rounded-xl shadow-lg p-6 text-center border border-cyan-100">
+            <div className="text-3xl font-bold text-cyan-600 mb-2">
+              {stats.activeBorrowings}
             </div>
+            <p className="text-gray-600">Emprunts actifs</p>
           </div>
-          <div className="col-md-3">
-            <div className="card text-center">
-              <div className="card-body">
-                <h5 className="card-title text-success">
-                  {stats.returnedBorrowings}
-                </h5>
-                <p className="card-text">Retournés</p>
-              </div>
+          <div className="bg-white rounded-xl shadow-lg p-6 text-center border border-green-100">
+            <div className="text-3xl font-bold text-green-600 mb-2">
+              {stats.returnedBorrowings}
             </div>
+            <p className="text-gray-600">Retournés</p>
           </div>
-          <div className="col-md-3">
-            <div className="card text-center">
-              <div className="card-body">
-                <h5 className="card-title text-danger">
-                  {stats.overdueBorrowings}
-                </h5>
-                <p className="card-text">En retard</p>
-              </div>
+          <div className="bg-white rounded-xl shadow-lg p-6 text-center border border-red-100">
+            <div className="text-3xl font-bold text-red-600 mb-2">
+              {stats.overdueBorrowings}
             </div>
+            <p className="text-gray-600">En retard</p>
           </div>
         </div>
       )}
 
-      <div className="mb-4">
-        <div className="row align-items-center">
-          <div className="col-md-6">
-            <h3>
-              {isUserView
-                ? activeOnly
-                  ? "Emprunts actifs"
-                  : "Mes emprunts"
-                : "Gestion des emprunts"}{" "}
-              ({borrowings.length})
-            </h3>
-          </div>
-          <div className="col-md-6 text-right">
-            {canManageBorrowings && (
-              <button
-                className="btn btn-warning btn-sm"
-                onClick={handleMarkOverdue}
-              >
-                Marquer les retards
-              </button>
-            )}
-          </div>
-        </div>
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-4">
+        <h3 className="text-2xl font-bold text-gray-800">
+          {isUserView
+            ? activeOnly
+              ? "Emprunts actifs"
+              : "Mes emprunts"
+            : "Gestion des emprunts"}{" "}
+          <span className="text-blue-600">({borrowings.length})</span>
+        </h3>
+        {canManageBorrowings && (
+          <button
+            className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center"
+            onClick={handleMarkOverdue}
+          >
+            <svg
+              className="w-4 h-4 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+              />
+            </svg>
+            Marquer les retards
+          </button>
+        )}
       </div>
 
       {error && (
-        <div className="alert alert-danger" role="alert">
-          {error}
+        <div
+          className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-6"
+          role="alert"
+        >
+          <div className="flex items-center">
+            <svg
+              className="w-5 h-5 mr-2"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fillRule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                clipRule="evenodd"
+              ></path>
+            </svg>
+            {error}
+          </div>
         </div>
       )}
 
       {borrowings.length === 0 ? (
-        <div className="text-center p-4">
-          <p className="text-muted">Aucun emprunt trouvé</p>
+        <div className="text-center py-12">
+          <svg
+            className="mx-auto h-12 w-12 text-gray-400 mb-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+            />
+          </svg>
+          <p className="text-gray-500 text-lg">Aucun emprunt trouvé</p>
         </div>
       ) : (
-        <div className="table-responsive">
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                {!isUserView && <th>Utilisateur</th>}
-                <th>Livre</th>
-                <th>Date d'emprunt</th>
-                <th>Date limite</th>
-                {!activeOnly && <th>Date de retour</th>}
-                <th>Statut</th>
-                {canManageBorrowings && <th>Actions</th>}
-              </tr>
-            </thead>
-            <tbody>
-              {borrowings.map((borrowing) => (
-                <tr key={borrowing._id}>
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50">
+                <tr>
                   {!isUserView && (
-                    <td>
-                      {borrowing.user?.name || "Utilisateur inconnu"}
-                      <br />
-                      <small className="text-muted">
-                        {borrowing.user?.email}
-                      </small>
-                    </td>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Utilisateur
+                    </th>
                   )}
-                  <td>
-                    <strong>{borrowing.book?.title || "Livre inconnu"}</strong>
-                    <br />
-                    <small className="text-muted">
-                      {borrowing.book?.author}
-                    </small>
-                  </td>
-                  <td>{formatDate(borrowing.borrowDate)}</td>
-                  <td>
-                    {formatDate(borrowing.dueDate)}
-                    {isOverdue(borrowing) &&
-                      borrowing.status !== "returned" && (
-                        <>
-                          <br />
-                          <small className="text-danger">
-                            <i className="fas fa-exclamation-triangle"></i> En
-                            retard
-                          </small>
-                        </>
-                      )}
-                  </td>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Livre
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Date d'emprunt
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Date limite
+                  </th>
                   {!activeOnly && (
-                    <td>
-                      {borrowing.returnDate
-                        ? formatDate(borrowing.returnDate)
-                        : "-"}
-                    </td>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Date de retour
+                    </th>
                   )}
-                  <td>
-                    <span className={getStatusBadge(borrowing)}>
-                      {getStatusText(borrowing)}
-                    </span>
-                  </td>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Statut
+                  </th>
                   {canManageBorrowings && (
-                    <td>
-                      {borrowing.status === "borrowed" ||
-                      borrowing.status === "overdue" ? (
-                        <button
-                          className="btn btn-success btn-sm"
-                          onClick={() => handleReturnBook(borrowing._id)}
-                        >
-                          Retourner
-                        </button>
-                      ) : (
-                        <span className="text-muted">-</span>
-                      )}
-                    </td>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Actions
+                    </th>
                   )}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {borrowings.map((borrowing, index) => (
+                  <tr
+                    key={borrowing._id}
+                    className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                  >
+                    {!isUserView && (
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div>
+                          <div className="text-sm font-medium text-gray-900">
+                            {borrowing.user?.name || "Utilisateur inconnu"}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            {borrowing.user?.email}
+                          </div>
+                        </div>
+                      </td>
+                    )}
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div>
+                        <div className="text-sm font-medium text-gray-900">
+                          {borrowing.book?.title || "Livre inconnu"}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {borrowing.book?.author}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {formatDate(borrowing.borrowDate)}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">
+                        {formatDate(borrowing.dueDate)}
+                      </div>
+                      {isOverdue(borrowing) &&
+                        borrowing.status !== "returned" && (
+                          <div className="text-xs text-red-600 flex items-center mt-1">
+                            <svg
+                              className="w-3 h-3 mr-1"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                                clipRule="evenodd"
+                              />
+                            </svg>
+                            En retard
+                          </div>
+                        )}
+                    </td>
+                    {!activeOnly && (
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {borrowing.returnDate
+                          ? formatDate(borrowing.returnDate)
+                          : "-"}
+                      </td>
+                    )}
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className={getStatusBadge(borrowing)}>
+                        {getStatusText(borrowing)}
+                      </span>
+                    </td>
+                    {canManageBorrowings && (
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        {borrowing.status === "borrowed" ||
+                        borrowing.status === "overdue" ? (
+                          <button
+                            className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center"
+                            onClick={() => handleReturnBook(borrowing._id)}
+                          >
+                            <svg
+                              className="w-4 h-4 mr-1"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                              />
+                            </svg>
+                            Retourner
+                          </button>
+                        ) : (
+                          <span className="text-gray-400">-</span>
+                        )}
+                      </td>
+                    )}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>
