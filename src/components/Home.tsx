@@ -12,10 +12,10 @@ export const Home: React.FC = () => {
 
       <main className="container mx-auto px-4 py-16">
         <div className="text-center animate-fade-in">
-          <h1 className="text-5xl md:text-6xl font-bold text-gradient mb-6">
+          <h1 className="text-3xl md:text-6xl font-bold text-gradient mb-6">
             Bienvenue dans notre Bibliothèque
           </h1>
-          <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-md md:text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
             Découvrez une vaste collection de livres, gérez vos emprunts et
             profitez d'une expérience de lecture enrichissante dans notre
             bibliothèque moderne.
@@ -25,7 +25,7 @@ export const Home: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20 animate-slide-in-left">
               <Link
                 to="/register"
-                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white text-lg px-8 py-4 h-14 w-60 rounded-3xl font-semibold shadow-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200 inline-flex items-center"
+                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white text-lg px-8 py-4 h-14 w-full sm:w-60 rounded-3xl font-semibold shadow-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200 inline-flex items-center justify-center"
               >
                 <svg
                   className="w-5 h-5 mr-2"
@@ -44,7 +44,7 @@ export const Home: React.FC = () => {
               </Link>
               <Link
                 to="/login"
-                className="bg-white text-blue-600 border-2 border-blue-600 px-8 py-4 rounded-3xl h-14 w-56 font-semibold hover:bg-blue-50 transition-all duration-200 text-lg flex items-center justify-center "
+                className="bg-white text-blue-600 border-2 border-blue-600 px-8 py-4 rounded-3xl h-14 w-full sm:w-56 font-semibold hover:bg-blue-50 transition-all duration-200 text-lg flex items-center justify-center "
               >
                 Se connecter
               </Link>

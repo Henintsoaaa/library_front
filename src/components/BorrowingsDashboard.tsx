@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { BorrowingsList } from "./BorrowingsList";
 import { CreateBorrowingForm } from "./CreateBorrowingForm";
 import { OverdueBooksList } from "./OverdueBooksList";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
 
 type TabType = "all" | "active" | "create" | "overdue" | "stats";
 
@@ -21,123 +22,81 @@ export const BorrowingsDashboard: React.FC = () => {
     setActiveTab("all");
   };
 
-  const getTabContent = () => {
-    switch (activeTab) {
-      case "all":
-        return (
-          <BorrowingsList key={`all-${refreshTrigger}`} showStats={canManage} />
-        );
-      case "active":
-        return (
-          <BorrowingsList key={`active-${refreshTrigger}`} activeOnly={true} />
-        );
-      case "create":
-        return (
-          <CreateBorrowingForm onBorrowingCreated={handleBorrowingCreated} />
-        );
-      case "overdue":
-        return <OverdueBooksList key={`overdue-${refreshTrigger}`} />;
-      case "stats":
-        return (
-          <BorrowingsList key={`stats-${refreshTrigger}`} showStats={true} />
-        );
-      default:
-        return null;
-    }
-  };
-
   return (
     <div className="borrowings-dashboard">
       {/* Navigation tabs */}
-      <div className="mb-4">
-        {/* <ul className="nav nav-tabs">
-          <li className="nav-item">
-            <button
-              className={`nav-link ${activeTab === "all" ? "active" : ""}`}
-              onClick={() => setActiveTab("all")}
-            >
-              {isMember ? "Mes emprunts" : "Tous les emprunts"}
-            </button>
-          </li>
-
-          <li className="nav-item">
-            <button
-              className={`nav-link ${activeTab === "active" ? "active" : ""}`}
-              onClick={() => setActiveTab("active")}
-            >
-              Emprunts actifs
-            </button>
-          </li>
-
-          <li className="nav-item">
-            <button
-              className={`nav-link ${activeTab === "create" ? "active" : ""}`}
-              onClick={() => setActiveTab("create")}
-            >
-              Nouvel emprunt
-            </button>
-          </li>
-
+      <Tabs
+        value={activeTab}
+        onValueChange={(value) => setActiveTab(value as TabType)}
+        className="mb-4"
+      >
+        <TabsList>
+          <TabsTrigger value="all">
+            {isMember ? "Mes emprunts" : "Tous les emprunts"}
+          </TabsTrigger>
+          <TabsTrigger value="active">Emprunts actifs</TabsTrigger>
+          <TabsTrigger value="create">Nouvel emprunt</TabsTrigger>
           {canManage && (
             <>
-              <li className="nav-item">
-                <button
-                  className={`nav-link ${
-                    activeTab === "overdue" ? "active" : ""
-                  }`}
-                  onClick={() => setActiveTab("overdue")}
-                >
-                  <span className="text-danger">
-                    <i className="fas fa-exclamation-triangle"></i>
-                    Retards
-                  </span>
-                </button>
-              </li>
-
-              <li className="nav-item">
-                <button
-                  className={`nav-link ${
-                    activeTab === "stats" ? "active" : ""
-                  }`}
-                  onClick={() => setActiveTab("stats")}
-                >
-                  Statistiques
-                </button>
-              </li>
+              <TabsTrigger value="overdue">
+                <i className="fas fa-exclamation-triangle mr-1"></i>
+                Retards
+              </TabsTrigger>
+              <TabsTrigger value="stats">Statistiques</TabsTrigger>
             </>
           )}
-        </ul> */}
-      </div>
+        </TabsList>
 
-      {/* Tab content */}
-      <div className="tab-content">{getTabContent()}</div>
+        <TabsContent value="all">
+          <BorrowingsList key={`all-${refreshTrigger}`} showStats={canManage} />
+        </TabsContent>
+        <TabsContent value="active">
+          <BorrowingsList key={`active-${refreshTrigger}`} activeOnly={true} />
+        </TabsContent>
+        <TabsContent value="create">
+          <CreateBorrowingForm onBorrowingCreated={handleBorrowingCreated} />
+        </TabsContent>
+        {canManage && (
+          <>
+            <TabsContent value="overdue">
+              <OverdueBooksList key={`overdue-${refreshTrigger}`} />
+            </TabsContent>
+            <TabsContent value="stats">
+              <BorrowingsList
+                key={`stats-${refreshTrigger}`}
+                showStats={true}
+              />
+            </TabsContent>
+          </>
+        )}
+      </Tabs>
 
       {/* Quick actions pour les administrateurs */}
       {canManage && (
         <div className="mt-4 p-3 bg-light rounded">
-          <h5>Actions rapides</h5>
-          <div className="btn-group" role="group">
+          <h5 className="mb-3 text-lg font-semibold">Actions rapides</h5>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <button
-              className="btn btn-outline-primary btn-sm"
+              className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-2xl font-medium hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex items-center justify-center"
               onClick={() => setActiveTab("create")}
             >
-              <i className="fas fa-plus"></i>
+              <i className="fas fa-plus mr-2"></i>
               Nouvel emprunt
             </button>
 
             <button
-              className="btn btn-outline-warning btn-sm"
+              className="bg-gradient-to-r from-orange-600 to-orange-700 text-white px-4 py-2 rounded-2xl font-medium hover:from-orange-700 hover:to-orange-800 transition-all duration-200 flex items-center justify-center"
               onClick={() => setActiveTab("overdue")}
             >
-              <i className="fas fa-exclamation-triangle"></i>
+              <i className="fas fa-exclamation-triangle mr-2"></i>
               Voir les retards
             </button>
 
             <button
-              className="btn btn-outline-info btn-sm"
+              className="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-4 py-2 rounded-2xl font-medium hover:from-purple-700 hover:to-purple-800 transition-all duration-200 flex items-center justify-center"
               onClick={() => setActiveTab("stats")}
             >
-              <i className="fas fa-chart-bar"></i>
+              <i className="fas fa-chart-bar mr-2"></i>
               Statistiques
             </button>
           </div>
