@@ -22,13 +22,13 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-100">
-      <div className="max-w-md w-full space-y-8 animate-bounce-in">
-        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      <div className="max-w-md w-full space-y-8">
+        <div className="modern-card p-8">
           <div className="text-center mb-8">
-            <div className="mx-auto h-16 w-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mb-4">
+            <div className="mx-auto h-20 w-20 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 animate-float shadow-lg">
               <svg
-                className="h-8 w-8 text-white"
+                className="h-10 w-10 text-white"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -41,7 +41,7 @@ export const Login: React.FC = () => {
                 />
               </svg>
             </div>
-            <h2 className="text-3xl font-bold text-gray-900 text-gradient">
+            <h2 className="heading-lg text-gradient animate-fade-in-up">
               Connexion à votre compte
             </h2>
             <p className="mt-2 text-sm text-gray-600">
@@ -89,7 +89,7 @@ export const Login: React.FC = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                 placeholder="votre@email.com"
               />
             </div>
@@ -108,7 +108,7 @@ export const Login: React.FC = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200"
                 placeholder="Votre mot de passe"
               />
             </div>
@@ -117,7 +117,7 @@ export const Login: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className={`bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200 w-full ${
+                className={`btn-gradient text-white px-6 py-4 rounded-xl font-semibold w-full text-lg h-12 flex justify-center items-center ${
                   loading ? "opacity-75 cursor-not-allowed" : ""
                 }`}
               >

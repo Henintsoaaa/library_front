@@ -47,7 +47,7 @@ export const Home: React.FC = () => {
                   </Link>
                   <Link
                     to="/register"
-                    className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200"
+                    className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-2 font-semibold shadow-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200 rounded-3xl"
                   >
                     S'inscrire
                   </Link>
@@ -73,7 +73,7 @@ export const Home: React.FC = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-20 animate-slide-in-left">
               <Link
                 to="/register"
-                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white text-lg px-8 py-4 rounded-lg font-semibold shadow-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200 inline-flex items-center"
+                className="bg-gradient-to-r from-blue-600 to-blue-700 text-white text-lg px-8 py-4 h-14 w-60 rounded-3xl font-semibold shadow-lg hover:from-blue-700 hover:to-blue-800 transform hover:scale-105 transition-all duration-200 inline-flex items-center"
               >
                 <svg
                   className="w-5 h-5 mr-2"
@@ -92,7 +92,7 @@ export const Home: React.FC = () => {
               </Link>
               <Link
                 to="/login"
-                className="bg-white text-blue-600 border-2 border-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition-all duration-200 text-lg"
+                className="bg-white text-blue-600 border-2 border-blue-600 px-8 py-4 rounded-3xl h-14 w-56 font-semibold hover:bg-blue-50 transition-all duration-200 text-lg flex items-center justify-center "
               >
                 Se connecter
               </Link>

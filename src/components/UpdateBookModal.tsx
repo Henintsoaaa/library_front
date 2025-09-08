@@ -63,7 +63,7 @@ export default function UpdateBookModal({
 
   return (
     <div
-      className="modal show d-block"
+      className="modal show d-block fixed inset-0 overflow-y-auto flex items-center justify-center p-4 bg-black/20"
       style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
     >
       <div className="modal-dialog">
