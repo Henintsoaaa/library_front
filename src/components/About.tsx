@@ -1,42 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { SharedNavbar } from "./SharedNavbar";
 
 export const About: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <nav className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <Link to="/" className="text-xl font-bold text-blue-600">
-                Bibliothèque
-              </Link>
-            </div>
-            <div className="flex items-center space-x-4">
-              <Link
-                to="/"
-                className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm"
-              >
-                Accueil
-              </Link>
-              <Link
-                to="/login"
-                className="text-gray-700 hover:text-gray-900 px-3 py-2 text-sm"
-              >
-                Connexion
-              </Link>
-              <Link
-                to="/register"
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm"
-              >
-                S'inscrire
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      <SharedNavbar />
 
-      <main className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <main className="container mx-auto px-4 py-16">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-8">
             À propos de notre Bibliothèque
@@ -57,7 +27,7 @@ export const About: React.FC = () => {
           </div>
 
           <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-lg shadow-md">
+            <div className="bg-white p-8 rounded-2xl shadow-md">
               <div className="text-4xl mb-4">🔒</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4">
                 Sécurité avancée
@@ -68,7 +38,7 @@ export const About: React.FC = () => {
               </p>
             </div>
 
-            <div className="bg-white p-8 rounded-lg shadow-md">
+            <div className="bg-white p-8 rounded-2xl shadow-md">
               <div className="text-4xl mb-4">⚡</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4">
                 Performance optimisée
@@ -78,7 +48,7 @@ export const About: React.FC = () => {
               </p>
             </div>
 
-            <div className="bg-white p-8 rounded-lg shadow-md">
+            <div className="bg-white p-8 rounded-2xl shadow-md">
               <div className="text-4xl mb-4">🎨</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4">
                 Design moderne
@@ -88,7 +58,7 @@ export const About: React.FC = () => {
               </p>
             </div>
 
-            <div className="bg-white p-8 rounded-lg shadow-md">
+            <div className="bg-white p-8 rounded-2xl shadow-md">
               <div className="text-4xl mb-4">📊</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4">
                 Gestion complète
@@ -99,7 +69,7 @@ export const About: React.FC = () => {
               </p>
             </div>
 
-            <div className="bg-white p-8 rounded-lg shadow-md">
+            <div className="bg-white p-8 rounded-2xl shadow-md">
               <div className="text-4xl mb-4">🔍</div>
               <h3 className="text-xl font-semibel text-gray-900 mb-4">
                 Recherche avancée
@@ -109,7 +79,7 @@ export const About: React.FC = () => {
               </p>
             </div>
 
-            <div className="bg-white p-8 rounded-lg shadow-md">
+            <div className="bg-white p-8 rounded-2xl shadow-md">
               <div className="text-4xl mb-4">📱</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-4">
                 Multi-plateforme
@@ -118,38 +88,6 @@ export const About: React.FC = () => {
                 Accessible sur ordinateur, tablette et mobile avec le même
                 confort
               </p>
-            </div>
-          </div>
-
-          <div className="mt-16 bg-blue-50 rounded-lg p-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              Technologies utilisées
-            </h2>
-            <div className="flex flex-wrap justify-center gap-4">
-              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                React
-              </span>
-              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                TypeScript
-              </span>
-              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                Vite
-              </span>
-              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                Tailwind CSS
-              </span>
-              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                React Router
-              </span>
-              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                Axios
-              </span>
-              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                NestJS
-              </span>
-              <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                JWT
-              </span>
             </div>
           </div>
         </div>

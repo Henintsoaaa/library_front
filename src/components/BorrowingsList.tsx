@@ -204,7 +204,7 @@ export const BorrowingsList: React.FC<BorrowingsListProps> = ({
         </h3>
         {canManageBorrowings && (
           <button
-            className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center"
+            className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-2xl font-medium transition-colors duration-200 flex items-center"
             onClick={handleMarkOverdue}
           >
             <svg
@@ -227,7 +227,7 @@ export const BorrowingsList: React.FC<BorrowingsListProps> = ({
 
       {error && (
         <div
-          className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-6"
+          className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-2xl mb-6"
           role="alert"
         >
           <div className="flex items-center">
@@ -369,7 +369,7 @@ export const BorrowingsList: React.FC<BorrowingsListProps> = ({
                         {borrowing.status === "borrowed" ||
                         borrowing.status === "overdue" ? (
                           <button
-                            className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center"
+                            className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-2xl text-sm font-medium transition-colors duration-200 flex items-center"
                             onClick={() => handleReturnBook(borrowing._id)}
                           >
                             <svg

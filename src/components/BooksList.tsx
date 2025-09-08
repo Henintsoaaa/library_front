@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 import type { Book } from "../types/book.type";
 import type { CreateBorrowingDto } from "../types/borrowing.type";
 import UpdateBookModal from "./UpdateBookModal";
+import DeleteBookModal from "./DeleteBookModal";
 
 interface BooksListProps {
   onBookSelect?: (book: Book) => void;
@@ -23,6 +24,8 @@ export const BooksList: React.FC<BooksListProps> = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [bookToDelete, setBookToDelete] = useState<Book | null>(null);
   const { user } = useAuth();
 
   const canManageBooks = user?.role === "admin" || user?.role === "librarian";
@@ -49,20 +52,6 @@ export const BooksList: React.FC<BooksListProps> = ({
     }
   };
 
-  const handleDeleteBook = async (bookId: string) => {
-    if (!window.confirm("Êtes-vous sûr de vouloir supprimer ce livre ?")) {
-      return;
-    }
-
-    try {
-      await booksApi.delete(bookId);
-      setBooks(books.filter((book) => book._id !== bookId));
-    } catch (err) {
-      setError("Erreur lors de la suppression du livre");
-      console.error("Error deleting book:", err);
-    }
-  };
-
   // show the update book modal
   const handleUpdateBook = (book: Book) => {
     setSelectedBook(book);
@@ -76,7 +65,17 @@ export const BooksList: React.FC<BooksListProps> = ({
 
   const handleBookUpdated = async (updatedBook: Book) => {
     try {
-      await booksApi.update(updatedBook._id, updatedBook);
+      // Extract only the updatable fields from the Book object
+      const updateData = {
+        title: updatedBook.title,
+        author: updatedBook.author,
+        isbn: updatedBook.isbn,
+        category: updatedBook.category,
+        publishedYear: updatedBook.publishedYear,
+        copies: updatedBook.copies,
+      };
+
+      await booksApi.update(updatedBook._id, updateData);
       await loadBooks(); // Reload books to reflect changes
       setShowUpdateModal(false);
       setSelectedBook(null);
@@ -84,6 +83,29 @@ export const BooksList: React.FC<BooksListProps> = ({
       setError("Erreur lors de la mise à jour du livre");
       console.error("Error updating book:", err);
     }
+  };
+
+  const handleDeleteBook = (book: Book) => {
+    setBookToDelete(book);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteBook = async () => {
+    if (!bookToDelete) return;
+    try {
+      await booksApi.delete(bookToDelete._id);
+      setBooks(books.filter((book) => book._id !== bookToDelete._id));
+      setShowDeleteModal(false);
+      setBookToDelete(null);
+    } catch (err) {
+      setError("Erreur lors de la suppression du livre");
+      console.error("Error deleting book:", err);
+    }
+  };
+
+  const cancelDeleteBook = () => {
+    setShowDeleteModal(false);
+    setBookToDelete(null);
   };
 
   const handleBorrowBook = async (book: Book) => {
@@ -135,16 +157,11 @@ export const BooksList: React.FC<BooksListProps> = ({
   return (
     <div className="container mx-auto px-4 animate-fade-in">
       <div className="mb-8">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h3 className="text-2xl font-bold text-gray-800 text-gradient">
-              Catalogue des livres ({filteredBooks.length})
-            </h3>
-          </div>
+        <div className="flex flex-col md:flex-row md:items-center md:justify-end gap-4">
           <div className="md:w-1/2">
             <input
               type="text"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl h-12 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               placeholder="Rechercher par titre, auteur ou catégorie..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -155,7 +172,7 @@ export const BooksList: React.FC<BooksListProps> = ({
 
       {error && (
         <div
-          className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-6"
+          className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-2xl mb-6"
           role="alert"
         >
           <div className="flex items-center">
@@ -193,7 +210,7 @@ export const BooksList: React.FC<BooksListProps> = ({
           <p className="text-gray-500 text-lg">Aucun livre trouvé</p>
         </div>
       ) : (
-        <div className="grid-responsive">
+        <div className="grid gird-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredBooks.map((book) => (
             <div key={book._id} className="animate-slide-in-left">
               <div className="bg-white rounded-xl shadow-lg h-full flex flex-col overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow duration-200">
@@ -245,7 +262,7 @@ export const BooksList: React.FC<BooksListProps> = ({
                     <div className="flex flex-wrap gap-2">
                       {onBookSelect && (
                         <button
-                          className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-lg font-medium hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex-1"
+                          className="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-4 py-2 rounded-2xl font-medium hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex-1"
                           onClick={() => onBookSelect(book)}
                         >
                           Sélectionner
@@ -254,7 +271,7 @@ export const BooksList: React.FC<BooksListProps> = ({
 
                       {showBorrowAction && canBorrowBooks && !onBookSelect && (
                         <button
-                          className="bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 rounded-lg font-medium hover:from-green-700 hover:to-green-800 transition-all duration-200 flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                          className="bg-gradient-to-r from-green-600 to-green-700 text-white px-4 py-2 rounded-2xl font-medium hover:from-green-700 hover:to-green-800 transition-all duration-200 flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
                           onClick={() => handleBorrowBook(book)}
                           disabled={book.copies === 0}
                         >
@@ -265,7 +282,7 @@ export const BooksList: React.FC<BooksListProps> = ({
                       {showActions && canManageBooks && (
                         <>
                           <button
-                            className="bg-white text-blue-600 border border-blue-600 px-3 py-2 rounded-lg font-medium hover:bg-blue-50 transition-colors duration-200 flex-1"
+                            className="bg-white text-blue-600 border border-blue-600 px-3 py-2 rounded-2xl font-medium hover:bg-blue-50 transition-colors duration-200 flex-1"
                             onClick={() => {
                               handleUpdateBook(book);
                             }}
@@ -273,8 +290,8 @@ export const BooksList: React.FC<BooksListProps> = ({
                             Modifier
                           </button>
                           <button
-                            className="bg-white text-red-600 border border-red-600 px-3 py-2 rounded-lg font-medium hover:bg-red-50 transition-colors duration-200 flex-1"
-                            onClick={() => handleDeleteBook(book._id)}
+                            className="bg-white text-red-600 border border-red-600 px-3 py-2 rounded-2xl font-medium hover:bg-red-50 transition-colors duration-200 flex-1"
+                            onClick={() => handleDeleteBook(book)}
                           >
                             Supprimer
                           </button>
@@ -294,6 +311,15 @@ export const BooksList: React.FC<BooksListProps> = ({
           book={selectedBook}
           onUpdate={handleBookUpdated}
           onClose={handleCloseUpdateModal}
+        />
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteModal && bookToDelete && (
+        <DeleteBookModal
+          book={bookToDelete}
+          onConfirm={confirmDeleteBook}
+          onCancel={cancelDeleteBook}
         />
       )}
     </div>

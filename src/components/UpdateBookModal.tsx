@@ -63,16 +63,16 @@ export default function UpdateBookModal({
 
   return (
     <div
-      className="modal show d-block fixed inset-0 overflow-y-auto flex items-center justify-center p-4 bg-black/20"
+      className="modal show d-block fixed inset-0 overflow-y-auto flex items-center justify-center p-4 bg-black/20 w-screen h-screen"
       style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
     >
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">Modifier le livre</h5>
+      <div className="modal-dialog bg-white rounded-2xl shadow-lg w-full max-w-lg mx-auto">
+        <div className="modal-content p-6">
+          <div className="modal-header flex justify-between items-center mb-4">
+            <h5 className="text-lg font-semibold">Modifier le livre</h5>
             <button
               type="button"
-              className="text-gray-400 hover:text-gray-600 p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200"
+              className="text-gray-400 hover:text-gray-600 p-2 rounded-2xl hover:bg-gray-100 transition-colors duration-200"
               onClick={onClose}
             >
               <svg
@@ -106,7 +106,7 @@ export default function UpdateBookModal({
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   id="title"
                   name="title"
                   value={updatedBook.title}
@@ -123,7 +123,7 @@ export default function UpdateBookModal({
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   id="author"
                   name="author"
                   value={updatedBook.author}
@@ -140,7 +140,7 @@ export default function UpdateBookModal({
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   id="isbn"
                   name="isbn"
                   value={updatedBook.isbn}
@@ -157,7 +157,7 @@ export default function UpdateBookModal({
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   id="category"
                   name="category"
                   value={updatedBook.category || ""}
@@ -173,7 +173,7 @@ export default function UpdateBookModal({
                 </label>
                 <input
                   type="number"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   id="publishedYear"
                   name="publishedYear"
                   value={updatedBook.publishedYear || ""}
@@ -189,7 +189,7 @@ export default function UpdateBookModal({
                 </label>
                 <input
                   type="number"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   id="copies"
                   name="copies"
                   value={updatedBook.copies || ""}
@@ -202,7 +202,7 @@ export default function UpdateBookModal({
           <div className="modal-footer">
             <button
               type="button"
-              className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg font-medium transition-colors duration-200"
+              className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-2xl font-medium transition-colors duration-200"
               onClick={onClose}
               disabled={loading}
             >
@@ -210,7 +210,7 @@ export default function UpdateBookModal({
             </button>
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors duration-200 disabled:opacity-50"
+              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-medium transition-colors duration-200 disabled:opacity-50"
               onClick={handleSubmit}
               disabled={loading}
             >

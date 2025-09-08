@@ -36,7 +36,7 @@ const getButtonSizeClasses = (size: ButtonSize = "default") => {
   const sizes = {
     default: "h-12 px-6 py-3",
     sm: "h-9 rounded-md px-3 text-xs",
-    lg: "h-14 rounded-lg px-8 text-base",
+    lg: "h-14 rounded-2xl px-8 text-base",
     icon: "h-10 w-10",
   };
   return sizes[size];
@@ -54,7 +54,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseClasses =
-      "inline-flex items-center justify-center rounded-lg text-sm font-semibold transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700";
+      "inline-flex items-center justify-center rounded-2xl text-sm font-semibold transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-white/20 before:to-transparent before:translate-x-[-100%] hover:before:translate-x-[100%] before:transition-transform before:duration-700";
 
     const variantClasses = getButtonVariantClasses(variant);
     const sizeClasses = getButtonSizeClasses(size);

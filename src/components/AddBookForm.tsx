@@ -74,7 +74,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
       <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 animate-fade-in">
         <div className="border-b border-gray-200 pb-4 mb-6">
           <div className="flex items-center">
-            <div className="flex items-center justify-center w-10 h-10 bg-green-100 rounded-lg mr-3">
+            <div className="flex items-center justify-center w-10 h-10 bg-green-100 rounded-2xl mr-3">
               <svg
                 className="w-6 h-6 text-green-600"
                 fill="none"
@@ -96,7 +96,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
         </div>{" "}
         <div className="p-6">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg mb-6 animate-fade-in">
+            <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-2xl mb-6 animate-fade-in">
               <div className="flex items-center">
                 <svg
                   className="w-5 h-5 mr-2"
@@ -125,7 +125,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                   id="title"
                   name="title"
                   value={formData.title}
@@ -143,7 +143,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                   id="author"
                   name="author"
                   value={formData.author}
@@ -164,7 +164,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                   id="isbn"
                   name="isbn"
                   value={formData.isbn}
@@ -183,7 +183,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
                 </label>
                 <input
                   type="text"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                   id="category"
                   name="category"
                   value={formData.category}
@@ -203,7 +203,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
                 </label>
                 <input
                   type="number"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                   id="publishedYear"
                   name="publishedYear"
                   value={formData.publishedYear || ""}
@@ -223,7 +223,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
                 </label>
                 <input
                   type="number"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                   id="copies"
                   name="copies"
                   value={formData.copies || 1}
@@ -237,7 +237,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
             <div className="flex flex-col sm:flex-row justify-end gap-3 pt-6 border-t border-gray-200">
               <button
                 type="button"
-                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg font-medium hover:bg-gray-300 transition-colors duration-200 order-2 sm:order-1"
+                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-2xl font-medium hover:bg-gray-300 transition-colors duration-200 order-2 sm:order-1"
                 onClick={onCancel}
                 disabled={loading}
               >
@@ -245,7 +245,7 @@ export const AddBookForm: React.FC<AddBookFormProps> = ({
               </button>
               <button
                 type="submit"
-                className={`bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-lg font-semibold shadow-lg hover:from-green-700 hover:to-green-800 transform hover:scale-105 transition-all duration-200 order-1 sm:order-2 ${
+                className={`bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-2xl font-semibold shadow-lg hover:from-green-700 hover:to-green-800 transform hover:scale-105 transition-all duration-200 order-1 sm:order-2 ${
                   loading ? "opacity-75 cursor-not-allowed" : ""
                 }`}
                 disabled={loading}

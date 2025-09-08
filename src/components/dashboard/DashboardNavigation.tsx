@@ -25,7 +25,7 @@ export const DashboardNavigation: React.FC<DashboardNavigationProps> = ({
           value={activeTab}
           onValueChange={(value) => setActiveTab(value as ActiveTab)}
         >
-          <TabsList className="h-12 bg-gray-50 border border-gray-200 w-full justify-center overflow-x-auto rounded-lg">
+          <TabsList className="h-12 bg-gray-50 border border-gray-200 w-full justify-center overflow-x-auto rounded-2xl">
             <TabsTrigger
               value="welcome"
               className="flex items-center gap-2 px-4 py-2 data-[state=active]:bg-white data-[state=active]:border data-[state=active]:border-gray-300 rounded-xl"
