@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { borrowingsApi } from "../apis/borrowings.api";
 import { useAuth } from "../context/AuthContext";
+import { UpdateBorrowingModal } from "./UpdateBorrowingModal";
 import type {
   BorrowingWithDetails,
   BorrowingStats,
@@ -21,6 +22,9 @@ export const BorrowingsList: React.FC<BorrowingsListProps> = ({
   const [stats, setStats] = useState<BorrowingStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedBorrowing, setSelectedBorrowing] =
+    useState<BorrowingWithDetails | null>(null);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const { user } = useAuth();
 
   const canManageBorrowings =
@@ -46,7 +50,7 @@ export const BorrowingsList: React.FC<BorrowingsListProps> = ({
         } else {
           borrowingsData = await borrowingsApi.getByUserId(userId);
         }
-      } else if (user?.role === "member") {
+      } else if (user?.role === "user") {
         // Charger mes emprunts
         if (activeOnly) {
           borrowingsData = await borrowingsApi.getMyActiveBorrowings();
@@ -95,6 +99,39 @@ export const BorrowingsList: React.FC<BorrowingsListProps> = ({
     } catch (err) {
       setError("Erreur lors du retour du livre");
       console.error("Error returning book:", err);
+    }
+  };
+
+  const handleUpdateBorrowing = (borrowing: BorrowingWithDetails) => {
+    setSelectedBorrowing(borrowing);
+    setShowUpdateModal(true);
+  };
+
+  const handleDeleteBorrowing = async (borrowingId: string) => {
+    if (
+      !window.confirm(
+        "Êtes-vous sûr de vouloir supprimer cet emprunt ? Cette action est irréversible."
+      )
+    ) {
+      return;
+    }
+
+    try {
+      await borrowingsApi.delete(borrowingId);
+      await loadBorrowings();
+      if (showStats) {
+        await loadStats();
+      }
+    } catch (err) {
+      setError("Erreur lors de la suppression de l'emprunt");
+      console.error("Error deleting borrowing:", err);
+    }
+  };
+
+  const handleBorrowingUpdated = () => {
+    loadBorrowings();
+    if (showStats) {
+      loadStats();
     }
   };
 
@@ -366,11 +403,35 @@ export const BorrowingsList: React.FC<BorrowingsListProps> = ({
                     </td>
                     {canManageBorrowings && (
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        {borrowing.status === "borrowed" ||
-                        borrowing.status === "overdue" ? (
+                        <div className="flex gap-2">
+                          {borrowing.status === "borrowed" ||
+                          borrowing.status === "overdue" ? (
+                            <button
+                              className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center"
+                              onClick={() => handleReturnBook(borrowing._id)}
+                            >
+                              <svg
+                                className="w-4 h-4 mr-1"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                              </svg>
+                              Retourner
+                            </button>
+                          ) : (
+                            <span className="text-gray-400">-</span>
+                          )}
+
                           <button
-                            className="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded-2xl text-sm font-medium transition-colors duration-200 flex items-center"
-                            onClick={() => handleReturnBook(borrowing._id)}
+                            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center"
+                            onClick={() => handleUpdateBorrowing(borrowing)}
                           >
                             <svg
                               className="w-4 h-4 mr-1"
@@ -382,14 +443,36 @@ export const BorrowingsList: React.FC<BorrowingsListProps> = ({
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                                 strokeWidth={2}
-                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
                               />
                             </svg>
-                            Retourner
+                            Modifier
                           </button>
-                        ) : (
-                          <span className="text-gray-400">-</span>
-                        )}
+
+                          {user?.role === "admin" && (
+                            <button
+                              className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center"
+                              onClick={() =>
+                                handleDeleteBorrowing(borrowing._id)
+                              }
+                            >
+                              <svg
+                                className="w-4 h-4 mr-1"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                />
+                              </svg>
+                              Supprimer
+                            </button>
+                          )}
+                        </div>
                       </td>
                     )}
                   </tr>
@@ -399,6 +482,13 @@ export const BorrowingsList: React.FC<BorrowingsListProps> = ({
           </div>
         </div>
       )}
+
+      <UpdateBorrowingModal
+        borrowing={selectedBorrowing}
+        isOpen={showUpdateModal}
+        onClose={() => setShowUpdateModal(false)}
+        onBorrowingUpdated={handleBorrowingUpdated}
+      />
     </div>
   );
 };

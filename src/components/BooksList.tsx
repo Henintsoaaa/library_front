@@ -6,17 +6,20 @@ import type { Book, BooksResponse, PaginationInfo } from "../types/book.type";
 import type { CreateBorrowingDto } from "../types/borrowing.type";
 import UpdateBookModal from "./UpdateBookModal";
 import DeleteBookModal from "./DeleteBookModal";
+import { ManageBorrowingModal } from "./ManageBorrowingModal";
 
 interface BooksListProps {
   onBookSelect?: (book: Book) => void;
   showActions?: boolean;
   showBorrowAction?: boolean;
+  showManageBorrowingAction?: boolean;
 }
 
 export const BooksList: React.FC<BooksListProps> = ({
   onBookSelect,
   showActions = false,
   showBorrowAction = false,
+  showManageBorrowingAction = false,
 }) => {
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
@@ -26,6 +29,10 @@ export const BooksList: React.FC<BooksListProps> = ({
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [bookToDelete, setBookToDelete] = useState<Book | null>(null);
+  const [showManageBorrowingModal, setShowManageBorrowingModal] =
+    useState(false);
+  const [bookToManageBorrowing, setBookToManageBorrowing] =
+    useState<Book | null>(null);
   const [pagination, setPagination] = useState<PaginationInfo>({
     page: 1,
     limit: 5,
@@ -187,6 +194,21 @@ export const BooksList: React.FC<BooksListProps> = ({
     }
   };
 
+  const handleManageBorrowing = (book: Book) => {
+    setBookToManageBorrowing(book);
+    setShowManageBorrowingModal(true);
+  };
+
+  const handleCloseManageBorrowingModal = () => {
+    setShowManageBorrowingModal(false);
+    setBookToManageBorrowing(null);
+  };
+
+  const handleBorrowingUpdated = () => {
+    // Recharger la liste des livres pour mettre à jour les disponibilités
+    loadBooks(pagination.page, pagination.limit);
+  };
+
   const filteredBooks = books.filter(
     (book) =>
       book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -308,7 +330,10 @@ export const BooksList: React.FC<BooksListProps> = ({
                   </div>
                 </div>
 
-                {(showActions || onBookSelect || showBorrowAction) && (
+                {(showActions ||
+                  onBookSelect ||
+                  showBorrowAction ||
+                  showManageBorrowingAction) && (
                   <div className="border-t border-gray-100 px-6 py-4">
                     <div className="flex flex-wrap gap-2">
                       {onBookSelect && (
@@ -329,6 +354,30 @@ export const BooksList: React.FC<BooksListProps> = ({
                           {book.copies === 0 ? "Non disponible" : "Emprunter"}
                         </button>
                       )}
+
+                      {showManageBorrowingAction &&
+                        canBorrowBooks &&
+                        !onBookSelect && (
+                          <button
+                            className="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-4 py-2 rounded-2xl font-medium hover:from-purple-700 hover:to-purple-800 transition-all duration-200 flex-1"
+                            onClick={() => handleManageBorrowing(book)}
+                          >
+                            <svg
+                              className="w-4 h-4 mr-2 inline"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 5H7a2 2 0 00-2 2v11a2 2 0 002 2h9.586a1 1 0 00.707-.293l2.414-2.414A1 1 0 0018 17.586V7a2 2 0 00-2-2h-2m-6 6v2m0-2V7m0 4h2m-2-4h2"
+                              />
+                            </svg>
+                            Gérer emprunt
+                          </button>
+                        )}
 
                       {showActions && canManageBooks && (
                         <>
@@ -438,6 +487,16 @@ export const BooksList: React.FC<BooksListProps> = ({
           book={bookToDelete}
           onConfirm={confirmDeleteBook}
           onCancel={cancelDeleteBook}
+        />
+      )}
+
+      {/* Manage Borrowing Modal */}
+      {showManageBorrowingModal && bookToManageBorrowing && (
+        <ManageBorrowingModal
+          book={bookToManageBorrowing}
+          isOpen={showManageBorrowingModal}
+          onClose={handleCloseManageBorrowingModal}
+          onBorrowingUpdated={handleBorrowingUpdated}
         />
       )}
     </div>

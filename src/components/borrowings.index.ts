@@ -14,5 +14,7 @@ export type {
 // Export des composants
 export { BorrowingsList } from "./BorrowingsList";
 export { CreateBorrowingForm } from "./CreateBorrowingForm";
+export { UpdateBorrowingModal } from "./UpdateBorrowingModal";
+export { ManageBorrowingModal } from "./ManageBorrowingModal";
 export { OverdueBooksList } from "./OverdueBooksList";
 export { BorrowingsDashboard } from "./BorrowingsDashboard";

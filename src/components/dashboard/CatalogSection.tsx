@@ -49,7 +49,8 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
       <BooksList
         key={refreshBooks}
         showActions={isAdminOrLibrarian}
-        showBorrowAction={user?.role === "member"}
+        showBorrowAction={false}
+        showManageBorrowingAction={user?.role === "member"}
       />
     </div>
   );
