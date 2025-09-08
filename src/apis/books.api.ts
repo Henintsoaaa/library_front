@@ -1,10 +1,18 @@
 import api from "../lib/api";
-import type { Book, CreateBookDto, UpdateBookDto } from "../types/book.type";
+import type {
+  Book,
+  CreateBookDto,
+  UpdateBookDto,
+  BooksResponse,
+} from "../types/book.type";
 
 export const booksApi = {
-  // Récupérer tous les livres
-  getAll: async (): Promise<Book[]> => {
-    const response = await api.get("/books");
+  // Récupérer tous les livres avec pagination
+  getAll: async (
+    page: number = 1,
+    limit: number = 10
+  ): Promise<BooksResponse> => {
+    const response = await api.get(`/books?page=${page}&limit=${limit}`);
     return response.data;
   },
 

@@ -50,7 +50,7 @@ export const BorrowingsDashboard: React.FC = () => {
     <div className="borrowings-dashboard">
       {/* Navigation tabs */}
       <div className="mb-4">
-        <ul className="nav nav-tabs">
+        {/* <ul className="nav nav-tabs">
           <li className="nav-item">
             <button
               className={`nav-link ${activeTab === "all" ? "active" : ""}`}
@@ -106,7 +106,7 @@ export const BorrowingsDashboard: React.FC = () => {
               </li>
             </>
           )}
-        </ul>
+        </ul> */}
       </div>
 
       {/* Tab content */}

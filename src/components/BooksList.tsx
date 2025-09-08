@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { booksApi } from "../apis/books.api";
 import { borrowingsApi } from "../apis/borrowings.api";
 import { useAuth } from "../context/AuthContext";
-import type { Book } from "../types/book.type";
+import type { Book, BooksResponse, PaginationInfo } from "../types/book.type";
 import type { CreateBorrowingDto } from "../types/borrowing.type";
 import UpdateBookModal from "./UpdateBookModal";
 import DeleteBookModal from "./DeleteBookModal";
@@ -26,6 +26,12 @@ export const BooksList: React.FC<BooksListProps> = ({
   const [selectedBook, setSelectedBook] = useState<Book | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [bookToDelete, setBookToDelete] = useState<Book | null>(null);
+  const [pagination, setPagination] = useState<PaginationInfo>({
+    page: 1,
+    limit: 5,
+    total: 0,
+    totalPages: 0,
+  });
   const { user } = useAuth();
 
   const canManageBooks = user?.role === "admin" || user?.role === "librarian";
@@ -34,15 +40,40 @@ export const BooksList: React.FC<BooksListProps> = ({
     user?.role === "admin" ||
     user?.role === "librarian";
 
+  const [triggerLoad, setTriggerLoad] = useState(0);
+
+  // Initial load
   useEffect(() => {
-    loadBooks();
+    loadBooks(1, 5); // Use smaller limit to ensure pagination shows
   }, []);
 
-  const loadBooks = async () => {
+  // Load on pagination changes
+  useEffect(() => {
+    if (triggerLoad > 0) {
+      loadBooks(pagination.page, pagination.limit);
+    }
+  }, [triggerLoad, pagination.page, pagination.limit]);
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= pagination.totalPages) {
+      setPagination((prev) => ({ ...prev, page: newPage }));
+      setTriggerLoad((prev) => prev + 1);
+    }
+  };
+
+  const handleLimitChange = (newLimit: number) => {
+    setPagination((prev) => ({ ...prev, limit: newLimit, page: 1 }));
+    setTriggerLoad((prev) => prev + 1);
+  };
+
+  const loadBooks = async (page: number = 1, limit: number = 10) => {
     try {
       setLoading(true);
-      const booksData = await booksApi.getAll();
-      setBooks(booksData);
+      const response: BooksResponse = await booksApi.getAll(page, limit);
+      console.log("Books API response:", response);
+      setBooks(response.books);
+      setPagination(response.pagination);
+      console.log("Pagination set:", response.pagination);
       setError(null);
     } catch (err) {
       setError("Erreur lors du chargement des livres");
@@ -76,7 +107,7 @@ export const BooksList: React.FC<BooksListProps> = ({
       };
 
       await booksApi.update(updatedBook._id, updateData);
-      await loadBooks(); // Reload books to reflect changes
+      await loadBooks(pagination.page, pagination.limit); // Reload current page
       setShowUpdateModal(false);
       setSelectedBook(null);
     } catch (err) {
@@ -94,7 +125,23 @@ export const BooksList: React.FC<BooksListProps> = ({
     if (!bookToDelete) return;
     try {
       await booksApi.delete(bookToDelete._id);
-      setBooks(books.filter((book) => book._id !== bookToDelete._id));
+      // If we're on a page that becomes empty after deletion, go to previous page
+      const newTotal = pagination.total - 1;
+      const newTotalPages = Math.ceil(newTotal / pagination.limit);
+      const newPage =
+        pagination.page > newTotalPages ? newTotalPages : pagination.page;
+
+      if (newPage !== pagination.page) {
+        setPagination((prev) => ({
+          ...prev,
+          page: newPage,
+          total: newTotal,
+          totalPages: newTotalPages,
+        }));
+      } else {
+        await loadBooks(pagination.page, pagination.limit);
+      }
+
       setShowDeleteModal(false);
       setBookToDelete(null);
     } catch (err) {
@@ -130,10 +177,12 @@ export const BooksList: React.FC<BooksListProps> = ({
 
       await borrowingsApi.create(borrowingData);
       alert("Livre emprunté avec succès!");
-    } catch (err: any) {
-      setError(
-        err.response?.data?.message || "Erreur lors de l'emprunt du livre"
-      );
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error && "response" in err
+          ? (err as any).response?.data?.message
+          : "Erreur lors de l'emprunt du livre";
+      setError(errorMessage);
       console.error("Error borrowing book:", err);
     }
   };
@@ -153,6 +202,8 @@ export const BooksList: React.FC<BooksListProps> = ({
       </div>
     );
   }
+
+  console.log("Pagination check:", pagination);
 
   return (
     <div className="container mx-auto px-4 animate-fade-in">
@@ -303,6 +354,73 @@ export const BooksList: React.FC<BooksListProps> = ({
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Pagination Controls */}
+      {(pagination.totalPages > 1 || pagination.total > 0) && (
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-gray-600">Afficher</span>
+            <select
+              value={pagination.limit}
+              onChange={(e) => handleLimitChange(Number(e.target.value))}
+              className="px-2 py-1 border border-gray-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+            </select>
+            <span className="text-sm text-gray-600">par page</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => handlePageChange(pagination.page - 1)}
+              disabled={pagination.page <= 1}
+              className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Précédent
+            </button>
+
+            <div className="flex items-center gap-1">
+              {Array.from(
+                { length: Math.min(5, pagination.totalPages) },
+                (_, i) => {
+                  const pageNum = Math.max(1, pagination.page - 2) + i;
+                  if (pageNum > pagination.totalPages) return null;
+
+                  return (
+                    <button
+                      key={pageNum}
+                      onClick={() => handlePageChange(pageNum)}
+                      className={`px-3 py-2 text-sm font-medium rounded-md ${
+                        pageNum === pagination.page
+                          ? "bg-blue-600 text-white"
+                          : "text-gray-500 bg-white border border-gray-300 hover:bg-gray-50"
+                      }`}
+                    >
+                      {pageNum}
+                    </button>
+                  );
+                }
+              )}
+            </div>
+
+            <button
+              onClick={() => handlePageChange(pagination.page + 1)}
+              disabled={pagination.page >= pagination.totalPages}
+              className="px-3 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Suivant
+            </button>
+          </div>
+
+          <div className="text-sm text-gray-600">
+            Page {pagination.page} sur {pagination.totalPages} (
+            {pagination.total} livres au total)
+          </div>
         </div>
       )}
 

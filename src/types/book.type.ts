@@ -25,3 +25,15 @@ export interface UpdateBookDto {
   publishedYear?: number;
   copies?: number;
 }
+
+export interface PaginationInfo {
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+export interface BooksResponse {
+  books: Book[];
+  pagination: PaginationInfo;
+}
