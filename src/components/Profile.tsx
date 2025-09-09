@@ -1,5 +1,6 @@
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { SharedNavbar } from "./SharedNavbar";
 
 export default function Profile() {
   const { user, loading, logout } = useAuth();
@@ -57,21 +58,122 @@ export default function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="heading-xl text-gradient animate-fade-in-up mb-4">
-            Mon Profil
-          </h1>
-          <p className="text-lg text-gray-600 animate-fade-in-up animation-delay-200">
-            Gérez vos informations personnelles et vos préférences
-          </p>
-        </div>
+    <>
+      <SharedNavbar />
+      <div className="h-full bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          {/* Profile Header */}
+          <div className="modern-card p-8 mb-8 animate-fade-in-up">
+            <div className="flex flex-col lg:flex-row items-center lg:items-start space-y-6 lg:space-y-0 lg:space-x-8">
+              {/* Avatar Section */}
+              <div className="flex-shrink-0">
+                <div className="relative">
+                  <div className="h-32 w-32 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 rounded-3xl flex items-center justify-center shadow-2xl animate-float">
+                    <span className="text-white font-bold text-4xl">
+                      {user.name.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="absolute -bottom-2 -right-2 h-8 w-8 bg-green-500 rounded-full border-4 border-white shadow-lg">
+                    <div className="h-full w-full bg-green-500 rounded-full animate-pulse"></div>
+                  </div>
+                </div>
+              </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Profile Info */}
-          <div className="lg:col-span-2">
+              {/* Profile Info */}
+              <div className="flex-1 text-center lg:text-left">
+                <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+                  <div>
+                    <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                      {user.name}
+                    </h1>
+                    <p className="text-xl text-gray-600 mb-4">{user.email}</p>
+                    <div className="flex flex-wrap items-center justify-center lg:justify-start gap-4">
+                      <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800 capitalize">
+                        <svg
+                          className="w-4 h-4 mr-2"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        {user.role}
+                      </span>
+                      <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-green-100 text-green-800">
+                        <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                        Actif
+                      </span>
+                      <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-purple-100 text-purple-800">
+                        <svg
+                          className="w-4 h-4 mr-2"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        Membre depuis Jan 2024
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Quick Actions */}
+                  <div className="flex flex-col sm:flex-row gap-3 mt-6 lg:mt-0">
+                    <button className="btn-gradient text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200">
+                      Modifier le profil
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-3 rounded-xl font-semibold text-sm shadow-lg hover:from-red-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-200"
+                    >
+                      Se déconnecter
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Stats Bar */}
+            <div className="mt-8 pt-8 border-t border-gray-200">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-blue-600 mb-1">
+                    12
+                  </div>
+                  <div className="text-sm text-gray-600">Livres empruntés</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-green-600 mb-1">
+                    0
+                  </div>
+                  <div className="text-sm text-gray-600">Retours en retard</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-purple-600 mb-1">
+                    8
+                  </div>
+                  <div className="text-sm text-gray-600">Réservations</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-orange-600 mb-1">
+                    4.8
+                  </div>
+                  <div className="text-sm text-gray-600">Note moyenne</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Rest of the content */}
+          <div className="md:hidden w-full grid lg:grid-cols-3 gap-8">
+            {/* Profile Info */}
+            {/* <div className="lg:col-span-2">
             <div className="modern-card p-8 animate-slide-in-left">
               <h2 className="text-xl font-bold text-gray-900 mb-6">
                 Informations personnelles
@@ -135,12 +237,35 @@ export default function Profile() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
-          {/* Actions */}
-          <div className="space-y-6">
+            {/* Statistiques */}
+            {/* <div className="modern-card p-6 animate-slide-in-right animation-delay-200">
+            <h2 className="text-xl font-bold text-gray-900 mb-6">
+              Statistiques
+            </h2>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">Livres empruntés</span>
+                <span className="font-bold text-gray-900">12</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">Retours en retard</span>
+                <span className="font-bold text-gray-900">0</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-gray-600">Membre depuis</span>
+                <span className="font-bold text-gray-900">Jan 2024</span>
+              </div>
+            </div>
+          </div> */}
+
+            {/* Actions */}
+            {/* <div className="space-y-6">
             <div className="modern-card p-6 animate-slide-in-right">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Actions</h2>
+              <h2 className="text-xl font-bold text-gray-900 mb-6">
+                Parametre
+              </h2>
               <div className="space-y-3">
                 <button className="w-full bg-white text-gray-700 px-4 py-3 rounded-xl font-semibold text-sm border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200">
                   Modifier le profil
@@ -151,41 +276,18 @@ export default function Profile() {
                 <button className="w-full bg-white text-gray-700 px-4 py-3 rounded-xl font-semibold text-sm border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200">
                   Préférences
                 </button>
+                <button
+                  onClick={handleLogout}
+                  className="w-full bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-3 rounded-xl font-semibold text-sm shadow-lg hover:from-red-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-200"
+                >
+                  Se déconnecter
+                </button>
               </div>
             </div>
-
-            <div className="modern-card p-6 animate-slide-in-right animation-delay-200">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">
-                Statistiques
-              </h2>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Livres empruntés</span>
-                  <span className="font-bold text-gray-900">12</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Retours en retard</span>
-                  <span className="font-bold text-gray-900">0</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600">Membre depuis</span>
-                  <span className="font-bold text-gray-900">Jan 2024</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="modern-card p-6 animate-slide-in-right animation-delay-400">
-              <h2 className="text-xl font-bold text-gray-900 mb-6">Sécurité</h2>
-              <button
-                onClick={handleLogout}
-                className="w-full bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-3 rounded-xl font-semibold text-sm shadow-lg hover:from-red-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-200"
-              >
-                Se déconnecter
-              </button>
-            </div>
+          </div> */}
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

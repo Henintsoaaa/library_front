@@ -1,112 +1,112 @@
-import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+// import { useAuth } from "../context/AuthContext";
+// import { useNavigate } from "react-router-dom";
 
 export const Dashboard = () => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
+  // const { user } = useAuth();
+  // const navigate = useNavigate();
 
-  const handleProfileClick = () => {
-    navigate("/profile");
-  };
+  // const handleProfileClick = () => {
+  //   navigate("/profile");
+  // };
 
-  const stats = [
-    {
-      title: "Livres empruntés",
-      value: "12",
-      icon: (
-        <svg
-          className="h-8 w-8 text-white"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
-          />
-        </svg>
-      ),
-      gradient: "from-blue-500 to-purple-500",
-    },
-    {
-      title: "Livres disponibles",
-      value: "245",
-      icon: (
-        <svg
-          className="h-8 w-8 text-white"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      ),
-      gradient: "from-green-500 to-teal-500",
-    },
-    {
-      title: "Emprunts en cours",
-      value: "8",
-      icon: (
-        <svg
-          className="h-8 w-8 text-white"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-          />
-        </svg>
-      ),
-      gradient: "from-purple-500 to-pink-500",
-    },
-    {
-      title: "Retours aujourd'hui",
-      value: "3",
-      icon: (
-        <svg
-          className="h-8 w-8 text-white"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      ),
-      gradient: "from-orange-500 to-red-500",
-    },
-  ];
+  // const stats = [
+  //   {
+  //     title: "Livres empruntés",
+  //     value: "12",
+  //     icon: (
+  //       <svg
+  //         className="h-8 w-8 text-white"
+  //         fill="none"
+  //         viewBox="0 0 24 24"
+  //         stroke="currentColor"
+  //       >
+  //         <path
+  //           strokeLinecap="round"
+  //           strokeLinejoin="round"
+  //           strokeWidth={2}
+  //           d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+  //         />
+  //       </svg>
+  //     ),
+  //     gradient: "from-blue-500 to-purple-500",
+  //   },
+  //   {
+  //     title: "Livres disponibles",
+  //     value: "245",
+  //     icon: (
+  //       <svg
+  //         className="h-8 w-8 text-white"
+  //         fill="none"
+  //         viewBox="0 0 24 24"
+  //         stroke="currentColor"
+  //       >
+  //         <path
+  //           strokeLinecap="round"
+  //           strokeLinejoin="round"
+  //           strokeWidth={2}
+  //           d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+  //         />
+  //       </svg>
+  //     ),
+  //     gradient: "from-green-500 to-teal-500",
+  //   },
+  //   {
+  //     title: "Emprunts en cours",
+  //     value: "8",
+  //     icon: (
+  //       <svg
+  //         className="h-8 w-8 text-white"
+  //         fill="none"
+  //         viewBox="0 0 24 24"
+  //         stroke="currentColor"
+  //       >
+  //         <path
+  //           strokeLinecap="round"
+  //           strokeLinejoin="round"
+  //           strokeWidth={2}
+  //           d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+  //         />
+  //       </svg>
+  //     ),
+  //     gradient: "from-purple-500 to-pink-500",
+  //   },
+  //   {
+  //     title: "Retours aujourd'hui",
+  //     value: "3",
+  //     icon: (
+  //       <svg
+  //         className="h-8 w-8 text-white"
+  //         fill="none"
+  //         viewBox="0 0 24 24"
+  //         stroke="currentColor"
+  //       >
+  //         <path
+  //           strokeLinecap="round"
+  //           strokeLinejoin="round"
+  //           strokeWidth={2}
+  //           d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+  //         />
+  //       </svg>
+  //     ),
+  //     gradient: "from-orange-500 to-red-500",
+  //   },
+  // ];
 
-  const recentActivities = [
-    {
-      action: "Emprunt",
-      book: "Le Petit Prince",
-      date: "2024-01-15",
-      status: "En cours",
-    },
-    { action: "Retour", book: "1984", date: "2024-01-14", status: "Terminé" },
-    {
-      action: "Emprunt",
-      book: "Harry Potter",
-      date: "2024-01-13",
-      status: "En cours",
-    },
-  ];
+  // const recentActivities = [
+  //   {
+  //     action: "Emprunt",
+  //     book: "Le Petit Prince",
+  //     date: "2024-01-15",
+  //     status: "En cours",
+  //   },
+  //   { action: "Retour", book: "1984", date: "2024-01-14", status: "Terminé" },
+  //   {
+  //     action: "Emprunt",
+  //     book: "Harry Potter",
+  //     date: "2024-01-13",
+  //     status: "En cours",
+  //   },
+  // ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8 px-4 sm:px-6 lg:px-8">
