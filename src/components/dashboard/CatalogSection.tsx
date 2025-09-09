@@ -2,7 +2,7 @@ import React from "react";
 import type { User } from "../../types/user.type";
 import { BooksList } from "../BooksList";
 
-type ActiveTab = "welcome" | "catalog" | "add-book" | "borrowings";
+type ActiveTab = "welcome" | "catalog" | "add-book";
 
 interface CatalogSectionProps {
   user: User | null;
@@ -46,12 +46,7 @@ export const CatalogSection: React.FC<CatalogSectionProps> = ({
           </button>
         )}
       </div>
-      <BooksList
-        key={refreshBooks}
-        showActions={isAdminOrLibrarian}
-        showBorrowAction={false}
-        showManageBorrowingAction={user?.role === "member"}
-      />
+      <BooksList key={refreshBooks} showActions={isAdminOrLibrarian} />
     </div>
   );
 };

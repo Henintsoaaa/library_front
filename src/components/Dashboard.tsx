@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { AddBookForm } from "./AddBookForm";
-import { BorrowingsDashboard } from "./BorrowingsDashboard";
 import type { Book } from "../types/book.type";
 import Navbar from "./Navbar";
 import {
@@ -10,7 +9,7 @@ import {
   CatalogSection,
 } from "./dashboard";
 
-type ActiveTab = "welcome" | "catalog" | "add-book" | "borrowings";
+type ActiveTab = "welcome" | "catalog" | "add-book";
 
 export const Dashboard: React.FC = () => {
   const { user } = useAuth();
@@ -40,13 +39,6 @@ export const Dashboard: React.FC = () => {
               onBookAdded={handleBookAdded}
               onCancel={() => setActiveTab("catalog")}
             />
-          </div>
-        );
-
-      case "borrowings":
-        return (
-          <div className="animate-fade-in">
-            <BorrowingsDashboard />
           </div>
         );
 

@@ -23,7 +23,7 @@ export const SharedNavbar: React.FC = () => {
               to="/"
               className="text-2xl font-bold text-gradient flex items-center"
             >
-              📚 Bibliothèque
+              📚 BiblioTech
             </Link>
           </div>
 

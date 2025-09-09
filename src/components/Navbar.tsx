@@ -26,7 +26,7 @@ export default function Navbar() {
         <div className="flex justify-between items-center py-4">
           <div>
             <h1 className="tetxt-xl md:text-2xl font-bold text-gradient">
-              📚 Bibliothèque - Tableau de bord
+              📚 BiblioTech - Tableau de bord
             </h1>
           </div>
 

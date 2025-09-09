@@ -13,12 +13,12 @@ export const Home: React.FC = () => {
       <main className="container mx-auto px-4 py-16">
         <div className="text-center animate-fade-in">
           <h1 className="text-3xl md:text-6xl font-bold text-gradient mb-6">
-            Bienvenue dans notre Bibliothèque
+            Bienvenue dans notre BiblioTech
           </h1>
           <p className="text-md md:text-xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
             Découvrez une vaste collection de livres, gérez vos emprunts et
             profitez d'une expérience de lecture enrichissante dans notre
-            bibliothèque moderne.
+            BiblioTech moderne.
           </p>
 
           {!isAuthenticated && (
@@ -89,7 +89,7 @@ export const Home: React.FC = () => {
           <div className="mt-20 animate-slide-in-right">
             <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-white/20 max-w-4xl mx-auto">
               <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Pourquoi choisir notre bibliothèque ?
+                Pourquoi choisir notre BiblioTech ?
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
                 <div className="flex items-start">

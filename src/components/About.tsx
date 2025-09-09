@@ -9,12 +9,12 @@ export const About: React.FC = () => {
       <main className="container mx-auto px-4 py-16">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-gray-900 mb-8">
-            À propos de notre Bibliothèque
+            À propos de notre BiblioTech
           </h1>
 
           <div className="max-w-3xl mx-auto text-lg text-gray-600 space-y-6">
             <p>
-              Notre système de gestion de bibliothèque moderne offre une
+              Notre système de gestion de BiblioTech moderne offre une
               expérience numérique complète pour la gestion des livres et des
               emprunts.
             </p>
