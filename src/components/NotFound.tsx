@@ -1,13 +1,17 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
-export const NotFound: React.FC = () => {
+export const NotFound = () => {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center">
-          <div className="mx-auto h-12 w-12 text-red-400">
-            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="mx-auto h-24 w-24 bg-gradient-to-r from-red-500 to-pink-500 rounded-3xl flex items-center justify-center mb-8 animate-bounce-in">
+            <svg
+              className="h-12 w-12 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -16,36 +20,40 @@ export const NotFound: React.FC = () => {
               />
             </svg>
           </div>
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
+
+          <h2 className="heading-lg text-gradient animate-fade-in-up mb-4">
             Page non trouvée
           </h2>
-          <p className="mt-2 text-sm text-gray-600">
+
+          <p className="text-lg text-gray-600 animate-fade-in-up animation-delay-200 mb-8">
             La page que vous cherchez n'existe pas ou a été déplacée.
           </p>
         </div>
 
-        <div className="mt-8">
-          <div className="bg-white py-8 px-4 shadow sm:rounded-2xl sm:px-10">
-            <div className="space-y-6">
-              <div className="text-center space-y-4">
-                <div className="text-9xl font-bold text-gray-300">404</div>
-                <p className="text-lg text-gray-600">
-                  Oups ! Cette page semble introuvable.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link
-                    to="/"
-                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                  >
-                    Retour à l'accueil
-                  </Link>
-                  <Link
-                    to="/dashboard"
-                    className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                  >
-                    Tableau de bord
-                  </Link>
-                </div>
+        <div className="animate-fade-in-up animation-delay-400">
+          <div className="modern-card p-8">
+            <div className="text-center space-y-6">
+              <div className="text-9xl font-bold text-gray-300 animate-pulse">
+                404
+              </div>
+
+              <p className="text-xl text-gray-600">
+                Oups ! Cette page semble introuvable.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  to="/"
+                  className="btn-gradient text-white px-6 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                >
+                  Retour à l'accueil
+                </Link>
+                <Link
+                  to="/dashboard"
+                  className="bg-white text-gray-700 px-6 py-4 rounded-xl font-semibold border-2 border-gray-300 hover:border-gray-400 hover:bg-gray-50 transition-all duration-200"
+                >
+                  Tableau de bord
+                </Link>
               </div>
             </div>
           </div>
