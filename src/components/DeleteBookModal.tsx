@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { deleteBook } from "../apis/books.api";
 import type { Book } from "../types/book.type";
+import { useToast } from "./ui/toast";
 
 interface DeleteBookModalProps {
   book: Book;
@@ -14,16 +15,29 @@ export default function DeleteBookModal({
   onDelete,
 }: DeleteBookModalProps) {
   const [isDeleting, setIsDeleting] = useState(false);
+  const toast = useToast();
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Scroll to top of modal when it opens
+    setTimeout(() => {
+      modalRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  }, []);
 
   const handleDelete = async () => {
     setIsDeleting(true);
     try {
       await deleteBook(book.id || (book as any)._id);
+      toast.success("Book deleted successfully!");
       onDelete(book.id || (book as any)._id);
       onClose();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error deleting book:", err);
-      // Optionally set an error state here to inform the user
+      const errorMessage =
+        err.response?.data?.message ||
+        "Failed to delete book. Please try again.";
+      toast.error(errorMessage);
     } finally {
       setIsDeleting(false);
     }
@@ -31,8 +45,11 @@ export default function DeleteBookModal({
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="modern-card max-w-md w-full animate-bounce-in">
-        <div className="p-8">
+      <div
+        ref={modalRef}
+        className="modern-card max-w-sm w-full animate-bounce-in"
+      >
+        <div className="p-6">
           {/* Header */}
           <div className="text-center mb-6">
             <div className="mx-auto h-16 w-16 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center mb-4">

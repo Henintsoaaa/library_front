@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { updateBook } from "../apis/books.api";
 import type { Book } from "../types/book.type";
+import { useToast } from "./ui/toast";
 
 interface EditBookModalProps {
   book: Book;
@@ -19,6 +20,15 @@ export default function EditBookModal({
   const [isbn, setIsbn] = useState(book.isbn);
   const [copies, setCopies] = useState(book.copies);
   const [isUpdating, setIsUpdating] = useState(false);
+  const toast = useToast();
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Scroll to top of modal when it opens
+    setTimeout(() => {
+      modalRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  }, []);
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,11 +43,15 @@ export default function EditBookModal({
       };
       const updatedBook = { ...book, ...updatedBookData };
       await updateBook(book.id || (book as any)._id, updatedBookData);
+      toast.success("Book updated successfully!");
       onUpdate(updatedBook);
       onClose();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error updating book:", err);
-      // Optionally set an error state here to inform the user
+      const errorMessage =
+        err.response?.data?.message ||
+        "Failed to update book. Please try again.";
+      toast.error(errorMessage);
     } finally {
       setIsUpdating(false);
     }
@@ -45,14 +59,17 @@ export default function EditBookModal({
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="modern-card max-w-2xl w-full max-h-[90vh] overflow-hidden animate-scale-in">
-        <div className="p-8">
+      <div
+        ref={modalRef}
+        className="modern-card max-w-lg w-full max-h-[85vh] overflow-y-auto animate-scale-in"
+      >
+        <div className="p-6">
           {/* Header */}
-          <div className="flex justify-between items-center mb-8 pb-6 border-b border-gray-200">
+          <div className="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
             <div className="flex items-center">
-              <div className="h-12 w-12 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+              <div className="h-10 w-10 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 rounded-lg flex items-center justify-center mr-3">
                 <svg
-                  className="h-6 w-6 text-white"
+                  className="h-5 w-5 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -65,9 +82,7 @@ export default function EditBookModal({
                   />
                 </svg>
               </div>
-              <h1 className="text-3xl font-bold text-gradient">
-                Modifier le Livre
-              </h1>
+              <h1 className="text-xl font-bold text-gradient">Edit Book</h1>
             </div>
             <button
               onClick={onClose}

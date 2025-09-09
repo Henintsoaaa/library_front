@@ -183,7 +183,7 @@ export default function BookList() {
   }
 
   return (
-    <div className="py-8 px-4 sm:px-6 lg:px-8">
+    <div className="py-4 sm:py-6 lg:py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <div className="text-center animate-fade-in-up mb-8">
@@ -272,7 +272,7 @@ export default function BookList() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-fade-in-up animation-delay-400">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 sm:gap-6 animate-fade-in-up animation-delay-400">
             {filteredBooks.map((book, index) => {
               const id = book.id || (book as any)._id;
               if (!id) {
@@ -283,10 +283,10 @@ export default function BookList() {
               return (
                 <div
                   key={id}
-                  className={`modern-card p-6 group cursor-pointer animate-scale-in animation-delay-${Math.min(
+                  className={`modern-card p-4 group cursor-pointer animate-scale-in animation-delay-${Math.min(
                     index * 100,
                     1000
-                  )}`}
+                  )} hover:scale-[1.02] transition-transform duration-200`}
                   onClick={() => {
                     user?.role === "user" && handleClick(String(id));
                   }}
@@ -350,24 +350,24 @@ export default function BookList() {
                         </p>
                         <p className="text-gray-900">{book.location}</p>
                       </div>
-                      <div className="flex space-x-2 pt-2">
+                      <div className="grid grid-cols-2 gap-2 pt-2">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             handleEditBook(book);
                           }}
-                          className="flex-1 btn-gradient text-white px-4 py-2 rounded-xl font-semibold text-sm shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200"
+                          className="btn-gradient text-white px-3 py-1.5 rounded-lg font-medium text-xs shadow hover:shadow-md transition-all duration-200"
                         >
-                          Modifier
+                          Edit
                         </button>
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
                             handleDeleteBook(book);
                           }}
-                          className="flex-1 bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-2 rounded-xl font-semibold text-sm shadow-lg hover:from-red-600 hover:to-pink-600 transform hover:scale-105 transition-all duration-200"
+                          className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1.5 rounded-lg font-medium text-xs shadow hover:from-red-600 hover:to-pink-600 transition-all duration-200"
                         >
-                          Supprimer
+                          Delete
                         </button>
                       </div>
                     </div>

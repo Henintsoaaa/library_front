@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { getBookDetails } from "../apis/books.api";
 import { createBorrowing } from "../apis/borrows.api";
 import { useAuth } from "../context/AuthContext";
-import { toast } from "react-toastify";
+import { useToast } from "./ui/toast";
 
 interface BookDetailProps {
   bookId: string;
@@ -14,12 +14,23 @@ export default function BookDetail({ bookId, onClose }: BookDetailProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { user } = useAuth();
+  const toast = useToast();
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (bookId) {
       console.log("Fetching book details for ID:", bookId);
       setLoading(true);
       setError(null);
+
+      // Scroll to top of modal when it opens
+      setTimeout(() => {
+        modalRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 100);
+
       getBookDetails(bookId)
         .then((data) => {
           console.log("Book data received:", data);
@@ -156,14 +167,17 @@ export default function BookDetail({ bookId, onClose }: BookDetailProps) {
 
   return (
     <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="modern-card max-w-6xl w-full max-h-[90vh] overflow-hidden animate-scale-in">
-        <div className="p-8">
+      <div
+        ref={modalRef}
+        className="modern-card max-w-4xl w-full max-h-[85vh] overflow-y-auto animate-scale-in"
+      >
+        <div className="p-6">
           {/* Header */}
-          <div className="flex justify-between items-center mb-8 pb-6 border-b border-gray-200">
+          <div className="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
             <div className="flex items-center">
-              <div className="h-12 w-12 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+              <div className="h-10 w-10 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 rounded-lg flex items-center justify-center mr-3">
                 <svg
-                  className="h-6 w-6 text-white"
+                  className="h-5 w-5 text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -176,9 +190,7 @@ export default function BookDetail({ bookId, onClose }: BookDetailProps) {
                   />
                 </svg>
               </div>
-              <h1 className="text-3xl font-bold text-gradient">
-                Détails du Livre
-              </h1>
+              <h1 className="text-xl font-bold text-gradient">Book Details</h1>
             </div>
             <button
               onClick={onClose}

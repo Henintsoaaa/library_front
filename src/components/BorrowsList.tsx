@@ -10,6 +10,7 @@ import { getUserById } from "../apis/users.api";
 import type { Borrow } from "../types/borrows.type";
 import type { Book } from "../types/book.type";
 import type { User } from "../types/auth.type";
+import { useToast } from "./ui/toast";
 
 interface BorrowWithBook extends Borrow {
   book?: Book;
@@ -22,6 +23,7 @@ export default function BorrowsList() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const { user } = useAuth();
+  const toast = useToast();
 
   useEffect(() => {
     const fetchBorrows = async () => {
@@ -91,13 +93,13 @@ export default function BorrowsList() {
             : b
         )
       );
-      alert("Livre retourné avec succès!");
+      toast.success("Book returned successfully!");
     } catch (error: any) {
       console.error("Error returning book:", error);
       const errorMessage =
         error.response?.data?.message ||
-        "Une erreur est survenue lors du retour du livre.";
-      alert(`Erreur: ${errorMessage}`);
+        "An error occurred while returning the book.";
+      toast.error(errorMessage);
     }
   };
 
@@ -223,7 +225,7 @@ export default function BorrowsList() {
   }
 
   return (
-    <div className="py-8 px-4 sm:px-6 lg:px-8">
+    <div className="py-4 sm:py-6 lg:py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <div className="text-center animate-fade-in-up mb-8">
@@ -316,7 +318,78 @@ export default function BorrowsList() {
           </div>
         ) : (
           <div className="animate-fade-in-up animation-delay-400">
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+            {/* Mobile Cards View */}
+            <div className="md:hidden space-y-4">
+              {filteredBorrows.map((borrow) => {
+                const id = borrow.id || borrow._id;
+                const statusInfo = getStatusVariant(borrow.status);
+                const overdue =
+                  isOverdue(borrow.dueDate) && borrow.status === "borrowed";
+
+                return (
+                  <div key={id} className="modern-card p-4">
+                    <div className="flex justify-between items-start mb-3">
+                      <h3 className="font-semibold text-gray-900 text-sm">
+                        {borrow.book?.title || "Unknown Book"}
+                      </h3>
+                      <span
+                        className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                          statusInfo.color
+                        } ${
+                          overdue ? "bg-red-100 text-red-800 animate-pulse" : ""
+                        }`}
+                      >
+                        {borrow.status === "borrowed" && overdue
+                          ? "Overdue"
+                          : borrow.status}
+                      </span>
+                    </div>
+
+                    <div className="space-y-2 text-sm text-gray-600">
+                      <p>
+                        <span className="font-medium">Author:</span>{" "}
+                        {borrow.book?.author || "Unknown"}
+                      </p>
+                      {user?.role === "admin" && borrow.user && (
+                        <p>
+                          <span className="font-medium">Borrower:</span>{" "}
+                          {borrow.user.name}
+                        </p>
+                      )}
+                      <p>
+                        <span className="font-medium">Borrowed:</span>{" "}
+                        {formatDate(borrow.borrowDate)}
+                      </p>
+                      <p
+                        className={overdue ? "text-red-600 font-semibold" : ""}
+                      >
+                        <span className="font-medium">Due:</span>{" "}
+                        {formatDate(borrow.dueDate)}
+                        {overdue && (
+                          <span className="text-red-500 ml-1">(Overdue)</span>
+                        )}
+                      </p>
+                    </div>
+
+                    {((user?.role === "user" && borrow.status === "borrowed") ||
+                      (user?.role === "admin" &&
+                        borrow.status === "borrowed")) && (
+                      <div className="mt-3 pt-3 border-t border-gray-200">
+                        <button
+                          onClick={() => returnBook(String(id))}
+                          className="w-full btn-gradient text-white py-2 rounded-xl text-sm font-medium shadow hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+                        >
+                          Return Book
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Desktop Table View */}
+            <div className="hidden md:block bg-white rounded-2xl shadow-lg overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead className="bg-gradient-to-r from-blue-50 to-purple-50">
