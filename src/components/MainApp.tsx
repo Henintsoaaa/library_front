@@ -1,53 +1,20 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "../context/AuthContext";
-import { ProtectedRoute } from "./ProtectedRoute";
-import { Home } from "./Home";
-import { Login } from "./Login";
-import { Register } from "./Register";
-import { Dashboard } from "./Dashboard";
-import { NotFound } from "./NotFound";
-import { About } from "./About";
+import { useAuth } from "../context/AuthContext";
+import Navbar from "./Navbar";
+import { Outlet } from "react-router-dom";
 
-export const MainApp: React.FC = () => {
+export default function MainApp() {
+  const { loading } = useAuth();
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
-    <AuthProvider>
-      <Router>
-        <div className="App">
-          <Routes>
-            {/* Routes publiques */}
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-
-            {/* Routes d'authentification */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-
-            {/* Routes protégées */}
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-
-            {/* Route pour l'administration (rôle admin requis) */}
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute requiredRole="admin">
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-
-            {/* Page 404 pour les routes non trouvées */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-      </Router>
-    </AuthProvider>
+    <div>
+      <Navbar />
+      <main>
+        <Outlet />
+      </main>
+    </div>
   );
-};
+}

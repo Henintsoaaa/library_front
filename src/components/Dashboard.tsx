@@ -1,64 +1,26 @@
-import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { AddBookForm } from "./AddBookForm";
-import type { Book } from "../types/book.type";
-import Navbar from "./Navbar";
-import {
-  DashboardNavigation,
-  WelcomeSection,
-  CatalogSection,
-} from "./dashboard";
+import { useState } from "react";
+import type { User } from "../types/auth.type";
+import { useNavigate } from "react-router-dom";
 
-type ActiveTab = "welcome" | "catalog" | "add-book";
-
-export const Dashboard: React.FC = () => {
+export const Dashboard = () => {
+  const [profile, setProfile] = useState<User | null>(null);
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<ActiveTab>("welcome");
-  const [refreshBooks, setRefreshBooks] = useState(0);
+  const navigate = useNavigate();
 
-  const handleBookAdded = (_book: Book) => {
-    setRefreshBooks((prev) => prev + 1);
-    setActiveTab("catalog");
-  };
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case "catalog":
-        return (
-          <CatalogSection
-            user={user}
-            setActiveTab={setActiveTab}
-            refreshBooks={refreshBooks}
-          />
-        );
-
-      case "add-book":
-        return (
-          <div className="animate-fade-in">
-            <AddBookForm
-              onBookAdded={handleBookAdded}
-              onCancel={() => setActiveTab("catalog")}
-            />
-          </div>
-        );
-
-      default:
-        return <WelcomeSection user={user} setActiveTab={setActiveTab} />;
+  const handleProfileClick = () => {
+    // Logic to fetch and set user profile
+    if (user) {
+      setProfile(user);
+      navigate("/profile");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      {/* Header */}
-      <Navbar />
-      {/* Navigation tabs */}
-      <DashboardNavigation
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        user={user}
-      />
-
-      <main className="container mx-auto px-4 py-8">{renderContent()}</main>
+    <div>
+      <h1>Dashboard</h1>
+      <p onClick={handleProfileClick}>Welcome, {user?.name}!</p>
+      <p>Your role: {user?.role}</p>
     </div>
   );
 };
