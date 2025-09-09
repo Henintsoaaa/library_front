@@ -4,6 +4,9 @@ import type { Book } from "../types/book.type";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Badge } from "./ui/badge";
 import BookDetail from "./BookDetail";
+import DeleteBookModal from "./DeleteBookModal";
+import EditBookModal from "./EditBookModal";
+import { useAuth } from "../context/AuthContext";
 
 export default function BookList() {
   const [books, setBooks] = useState<Book[]>([]);
@@ -12,6 +15,12 @@ export default function BookList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedBookId, setSelectedBookId] = useState<string | null>(null);
   const [showDetail, setShowDetail] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [bookToDelete, setBookToDelete] = useState<Book | null>(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [bookToEdit, setBookToEdit] = useState<Book | null>(null);
+
+  const { user } = useAuth();
 
   useEffect(() => {
     const getBooks = async () => {
@@ -54,6 +63,48 @@ export default function BookList() {
   const handleCloseDetail = () => {
     setShowDetail(false);
     setSelectedBookId(null);
+  };
+
+  const handleDeleteBook = (book: Book) => {
+    setBookToDelete(book);
+    setShowDeleteModal(true);
+  };
+
+  const handleConfirmDelete = (bookId: string) => {
+    setBooks((prevBooks) =>
+      prevBooks.filter((book) => (book.id || (book as any)._id) !== bookId)
+    );
+    if (selectedBookId === bookId) {
+      handleCloseDetail();
+    }
+  };
+
+  const handleCloseDeleteModal = () => {
+    setShowDeleteModal(false);
+    setBookToDelete(null);
+  };
+
+  const handleEditBook = (book: Book) => {
+    setBookToEdit(book);
+    setShowEditModal(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+    setBookToEdit(null);
+  };
+
+  const handleUpdateBook = (updatedBook: Book) => {
+    setBooks((prevBooks) =>
+      prevBooks.map((book) =>
+        (book.id || (book as any)._id) ===
+        (updatedBook.id || (updatedBook as any)._id)
+          ? updatedBook
+          : book
+      )
+    );
+    setShowEditModal(false);
+    setBookToEdit(null);
   };
 
   const handleClick = (bookId: string) => {
@@ -180,7 +231,9 @@ export default function BookList() {
               <Card
                 key={id}
                 className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-                onClick={() => handleClick(String(id))}
+                onClick={() => {
+                  user?.role === "user" && handleClick(String(id));
+                }}
               >
                 <CardHeader className="pb-3">
                   <div className="flex justify-between items-start mb-2">
@@ -205,34 +258,37 @@ export default function BookList() {
                       </p>
                       <p className="text-gray-900">{book.author}</p>
                     </div>
-
-                    {/* <div>
-                      <p className="text-sm font-medium text-gray-700">ISBN</p>
-                      <p className="text-gray-900 font-mono text-sm">
-                        {book.isbn}
-                      </p>
-                    </div>
-
-                    {book.category && (
-                      <div>
-                        <p className="text-sm font-medium text-gray-700">
-                          Category
-                        </p>
-                        <Badge variant="secondary" className="mt-1">
-                          {book.category}
-                        </Badge>
-                      </div>
-                    )}
-
-                    {book.publishedYear && (
-                      <div>
-                        <p className="text-sm font-medium text-gray-700">
-                          Published
-                        </p>
-                        <p className="text-gray-900">{book.publishedYear}</p>
-                      </div>
-                    )} */}
                   </div>
+                  {user?.role === "admin" && (
+                    <div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-700">
+                          ISBN
+                        </p>
+                        <p className="text-gray-900">{book.isbn}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-700">
+                          Location
+                        </p>
+                        <p className="text-gray-900">{book.location}</p>
+                      </div>
+                      <div className="mt-4 flex space-x-2">
+                        <button
+                          onClick={() => handleEditBook(book)}
+                          className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+                        >
+                          Modifier
+                        </button>
+                        <button
+                          onClick={() => handleDeleteBook(book)}
+                          className="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700"
+                        >
+                          Supprimer
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             );
@@ -241,6 +297,20 @@ export default function BookList() {
       )}
       {showDetail && selectedBookId && (
         <BookDetail bookId={selectedBookId} onClose={handleCloseDetail} />
+      )}
+      {showDeleteModal && bookToDelete && (
+        <DeleteBookModal
+          book={bookToDelete}
+          onClose={handleCloseDeleteModal}
+          onDelete={handleConfirmDelete}
+        />
+      )}
+      {showEditModal && bookToEdit && (
+        <EditBookModal
+          book={bookToEdit}
+          onClose={handleCloseEditModal}
+          onUpdate={handleUpdateBook}
+        />
       )}
     </div>
   );

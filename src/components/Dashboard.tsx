@@ -1,11 +1,9 @@
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 import UserDashboard from "./UserDashboard";
 import AdminDashboard from "./AdminDashboard";
 
 export const Dashboard = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 py-8 px-4 sm:px-6 lg:px-8">

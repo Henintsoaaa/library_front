@@ -37,6 +37,8 @@ export interface BookFormData {
   category?: string;
   publishedYear?: number;
   copies?: number;
+  availableCopies?: number;
+  location?: string;
 }
 
 export interface BookUpdateData {
