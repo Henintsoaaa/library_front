@@ -2,6 +2,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
 import BookList from "./BookList";
 import { useState } from "react";
 import CreateBookModal from "./CreateBookModal";
+import BorrowsList from "./BorrowsList";
 
 export default function AdminDashboard() {
   const [showCreateBookModal, setShowCreateBookModal] = useState(false);
@@ -194,15 +195,7 @@ export default function AdminDashboard() {
                 />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">
-              Gestion des Emprunts
-            </h3>
-            <p className="text-gray-600">
-              Surveillance et gestion des emprunts en cours
-            </p>
-            <p className="text-sm text-gray-500 mt-4">
-              Fonctionnalité en développement
-            </p>
+            <BorrowsList />
           </div>
         </TabsContent>
 

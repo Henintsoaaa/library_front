@@ -1,5 +1,6 @@
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
 import BookList from "./BookList";
+import BorrowsList from "./BorrowsList";
 
 export default function UserDashboard() {
   return (
@@ -114,10 +115,7 @@ export default function UserDashboard() {
                 />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">
-              Gestion des Emprunts
-            </h3>
-            <p className="text-gray-600">Fonctionnalité en développement</p>
+            <BorrowsList />
           </div>
         </TabsContent>
 

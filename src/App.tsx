@@ -9,6 +9,8 @@ import { NotFound } from "./components/NotFound";
 import { About } from "./components/About";
 import Profile from "./components/Profile";
 import MainApp from "./components/MainApp";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -32,6 +34,16 @@ function App() {
           {/* Route 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
       </Router>
     </AuthProvider>
   );
