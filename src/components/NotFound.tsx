@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export const NotFound = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 min-h-[70vh]">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="text-center">
           <div className="mx-auto h-24 w-24 bg-gradient-to-r from-red-500 to-pink-500 rounded-3xl flex items-center justify-center mb-8 animate-bounce-in">

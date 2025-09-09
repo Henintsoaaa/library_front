@@ -552,6 +552,53 @@ body {
       margin-right: -1rem;
       border-radius: 0;
     }
+
+    /* Improved mobile card design */
+    .modern-card {
+      margin-bottom: 1rem;
+      border-radius: 1rem;
+    }
+
+    /* Better mobile grid */
+    .mobile-grid-1 {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    /* Enhanced mobile touch targets */
+    .mobile-touch {
+      min-height: 44px;
+      min-width: 44px;
+    }
+
+    /* Mobile-specific animations */
+    .mobile-slide-up {
+      animation: mobileSlideUp 0.3s ease-out;
+    }
+
+    @keyframes mobileSlideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Improved mobile modal */
+    .mobile-modal {
+      margin: 0.5rem;
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+
+    /* Mobile-first search bar */
+    .mobile-search {
+      border-radius: 1rem;
+      padding: 1rem;
+      font-size: 16px; /* Prevents zoom on iOS */
+    }
   }
 
   /* Tablet improvements */

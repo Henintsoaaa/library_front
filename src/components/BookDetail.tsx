@@ -33,13 +33,34 @@ export default function BookDetail({ bookId, onClose }: BookDetailProps) {
 
   if (loading) {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
-        <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full mx-4">
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="modern-card p-8 max-w-md w-full animate-scale-in">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-            <span className="block mt-4 text-gray-700">
-              Loading book details...
-            </span>
+            <div className="mx-auto h-16 w-16 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 rounded-full flex items-center justify-center mb-4 animate-pulse">
+              <svg
+                className="h-8 w-8 text-white animate-spin"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              Chargement...
+            </h3>
+            <p className="text-gray-600">Récupération des détails du livre</p>
           </div>
         </div>
       </div>
@@ -48,19 +69,40 @@ export default function BookDetail({ bookId, onClose }: BookDetailProps) {
 
   if (error) {
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
-        <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
-          <div className="p-6">
-            <div className="flex justify-between items-center mb-4 border-b pb-4">
-              <h1 className="text-2xl font-bold text-gray-900">Error</h1>
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div className="modern-card p-8 max-w-md w-full animate-bounce-in">
+          <div className="text-center">
+            <div className="mx-auto h-16 w-16 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center mb-4">
+              <svg
+                className="h-8 w-8 text-white"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
+                />
+              </svg>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-2">Erreur</h3>
+            <p className="text-red-600 mb-6">{error}</p>
+            <div className="flex space-x-3">
+              <button
+                onClick={() => window.location.reload()}
+                className="btn-gradient text-white px-4 py-2 rounded-xl font-semibold text-sm flex-1"
+              >
+                Réessayer
+              </button>
               <button
                 onClick={onClose}
-                className="text-gray-500 hover:text-gray-700 text-3xl leading-none"
+                className="bg-gray-100 text-gray-700 px-4 py-2 rounded-xl font-semibold text-sm flex-1 hover:bg-gray-200 transition-colors duration-200"
               >
-                ×
+                Fermer
               </button>
             </div>
-            <p className="text-red-600 text-center">{error}</p>
           </div>
         </div>
       </div>
@@ -68,82 +110,228 @@ export default function BookDetail({ bookId, onClose }: BookDetailProps) {
   }
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="modern-card max-w-6xl w-full max-h-[90vh] overflow-hidden animate-scale-in">
         <div className="p-8">
-          <div className="flex justify-between items-center mb-6 border-b pb-4">
-            <h1 className="text-3xl font-bold text-gray-900">Book Details</h1>
+          {/* Header */}
+          <div className="flex justify-between items-center mb-8 pb-6 border-b border-gray-200">
+            <div className="flex items-center">
+              <div className="h-12 w-12 bg-gradient-to-br from-blue-500 via-purple-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                <svg
+                  className="h-6 w-6 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                  />
+                </svg>
+              </div>
+              <h1 className="text-3xl font-bold text-gradient">
+                Détails du Livre
+              </h1>
+            </div>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 text-3xl leading-none"
+              className="text-gray-400 hover:text-gray-600 p-2 rounded-xl hover:bg-gray-100 transition-all duration-200"
             >
-              ×
+              <svg
+                className="h-8 w-8"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
             </button>
           </div>
+
+          {/* Main Content */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Book Information */}
             <div className="lg:col-span-2 space-y-6">
               <div>
-                <h2 className="text-3xl font-semibold text-gray-900 mb-2">
+                <h2 className="text-4xl font-bold text-gray-900 mb-3">
                   {book.title}
                 </h2>
-                <p className="text-xl text-gray-600">by {book.author}</p>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center">
-                  <span className="font-medium text-gray-700 w-32">ISBN:</span>
-                  <span className="text-gray-900">{book.isbn}</span>
+                <p className="text-xl text-gray-600 mb-4">par {book.author}</p>
+
+                {/* Availability Status */}
+                <div className="inline-flex items-center px-4 py-2 rounded-full bg-green-100 text-green-800 text-sm font-semibold">
+                  <div className="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                  {book.availableCopies > 0 ? "Disponible" : "Non disponible"}
                 </div>
-                {book.category && (
-                  <div className="flex items-center">
-                    <span className="font-medium text-gray-700 w-32">
-                      Category:
-                    </span>
-                    <span className="text-gray-900">{book.category}</span>
-                  </div>
-                )}
-                {book.publishedYear && (
-                  <div className="flex items-center">
-                    <span className="font-medium text-gray-700 w-32">
-                      Published Year:
-                    </span>
-                    <span className="text-gray-900">{book.publishedYear}</span>
-                  </div>
-                )}
-                {book.copies !== undefined && (
-                  <div className="flex items-center">
-                    <span className="font-medium text-gray-700 w-32">
-                      Total Copies:
-                    </span>
-                    <span className="text-gray-900">{book.copies}</span>
-                  </div>
-                )}
-                {book.availableCopies !== undefined && (
-                  <div className="flex items-center">
-                    <span className="font-medium text-gray-700 w-32">
-                      Available Copies:
-                    </span>
-                    <span className="text-gray-900">
-                      {book.availableCopies}
-                    </span>
-                  </div>
-                )}
-                {book.location && (
-                  <div className="flex items-center">
-                    <span className="font-medium text-gray-700 w-32">
-                      Location:
-                    </span>
-                    <span className="text-gray-900">{book.location}</span>
-                  </div>
-                )}
               </div>
+
+              {/* Book Details Grid */}
+              <div className="bg-gray-50 rounded-2xl p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Informations
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="bg-white rounded-xl p-4">
+                    <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+                      ISBN
+                    </span>
+                    <p className="text-gray-900 font-mono mt-1">{book.isbn}</p>
+                  </div>
+                  {book.category && (
+                    <div className="bg-white rounded-xl p-4">
+                      <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+                        Catégorie
+                      </span>
+                      <p className="text-gray-900 mt-1">{book.category}</p>
+                    </div>
+                  )}
+                  {book.publishedYear && (
+                    <div className="bg-white rounded-xl p-4">
+                      <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+                        Année de publication
+                      </span>
+                      <p className="text-gray-900 mt-1">{book.publishedYear}</p>
+                    </div>
+                  )}
+                  {book.copies !== undefined && (
+                    <div className="bg-white rounded-xl p-4">
+                      <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+                        Exemplaires totaux
+                      </span>
+                      <p className="text-gray-900 mt-1">{book.copies}</p>
+                    </div>
+                  )}
+                  {book.availableCopies !== undefined && (
+                    <div className="bg-white rounded-xl p-4">
+                      <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+                        Exemplaires disponibles
+                      </span>
+                      <p className="text-gray-900 mt-1 font-semibold">
+                        {book.availableCopies}
+                      </p>
+                    </div>
+                  )}
+                  {book.location && (
+                    <div className="bg-white rounded-xl p-4">
+                      <span className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
+                        Emplacement
+                      </span>
+                      <p className="text-gray-900 mt-1">{book.location}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Book Description (if available) */}
+              {book.description && (
+                <div className="bg-gray-50 rounded-2xl p-6">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Description
+                  </h3>
+                  <p className="text-gray-700 leading-relaxed">
+                    {book.description}
+                  </p>
+                </div>
+              )}
             </div>
-            <div className="flex flex-col justify-center items-center">
-              <div className="w-48 h-64 bg-gray-200 rounded-lg flex items-center justify-center mb-4">
-                <span className="text-gray-500">Book Cover</span>
+
+            {/* Book Cover and Actions */}
+            <div className="flex flex-col items-center space-y-6">
+              <div className="w-full max-w-xs">
+                <div className="aspect-[3/4] w-full bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center shadow-lg">
+                  <div className="text-center">
+                    <svg
+                      className="mx-auto h-16 w-16 text-gray-400 mb-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                      />
+                    </svg>
+                    <span className="text-gray-500 font-medium">
+                      Couverture du livre
+                    </span>
+                  </div>
+                </div>
               </div>
-              <button className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium">
-                Emprunter
-              </button>
+
+              {/* Action Buttons */}
+              <div className="w-full max-w-xs space-y-3">
+                {book.availableCopies > 0 ? (
+                  <button className="w-full btn-gradient text-white py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 flex items-center justify-center">
+                    <svg
+                      className="w-5 h-5 mr-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
+                    Emprunter
+                  </button>
+                ) : (
+                  <button
+                    disabled
+                    className="w-full bg-gray-400 text-white py-4 rounded-xl font-semibold text-lg cursor-not-allowed"
+                  >
+                    Non disponible
+                  </button>
+                )}
+
+                <button className="w-full bg-white border-2 border-gray-300 text-gray-700 py-3 rounded-xl font-semibold hover:border-gray-400 hover:bg-gray-50 transition-all duration-200 flex items-center justify-center">
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                    />
+                  </svg>
+                  Ajouter aux favoris
+                </button>
+              </div>
+
+              {/* Quick Stats */}
+              <div className="w-full max-w-xs bg-gray-50 rounded-2xl p-4">
+                <div className="text-center space-y-2">
+                  <div>
+                    <div className="text-2xl font-bold text-blue-600">
+                      {book.copies || 0}
+                    </div>
+                    <div className="text-xs text-gray-600">
+                      Exemplaires totaux
+                    </div>
+                  </div>
+                  <div className="border-t border-gray-200 pt-2">
+                    <div className="text-2xl font-bold text-green-600">
+                      {book.availableCopies || 0}
+                    </div>
+                    <div className="text-xs text-gray-600">Disponibles</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
